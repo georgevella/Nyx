@@ -23,6 +23,8 @@ namespace Nyx.AppSupport.Wpf
             _viewResolver = new ViewResolver();
         }
 
+        public IContainer Container => _container;
+
         public void Start<TStartViewModel>() where TStartViewModel : IViewModel
         {
             var navigator = _container.Get<INavigator>();
