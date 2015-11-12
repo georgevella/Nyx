@@ -20,6 +20,8 @@ namespace Nyx.Composition
         /// </summary>
         Type TargetType { get; }
 
+        bool SupportsInstanceBuilder { get; }
+
         /// <summary>
         /// Returns an instance builder instance that can be used to populate properties in a constructed contract
         /// </summary>

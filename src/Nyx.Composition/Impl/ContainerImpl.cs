@@ -88,7 +88,8 @@ namespace Nyx.Composition.Impl
             {
                 var key = new ServiceKey(reg);
                 _factories.Add(key, reg.GetObjectFactory());
-                _instanceBuilders.Add(key, reg.GetInstanceBuilder());
+                if (reg.SupportsInstanceBuilder)
+                    _instanceBuilders.Add(key, reg.GetInstanceBuilder());
             }
         }
 
@@ -112,10 +113,16 @@ namespace Nyx.Composition.Impl
             }
             var key = new ServiceKey(contractType, name);
             var factory = _factories[key];
-            var builder = _instanceBuilders[key];
 
             var instance = factory.Create(instantiationGraph);
-            builder.Build(instantiationGraph, instance);
+
+            // if registration does not support instance building (it's a singleton / set up with Using(instance) method
+            // an instancebuilder won't be present
+            if (_instanceBuilders.ContainsKey(key))
+            {
+                var builder = _instanceBuilders[key];
+                builder.Build(instantiationGraph, instance);
+            }
 
             return instance;
         }

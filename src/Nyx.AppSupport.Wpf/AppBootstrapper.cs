@@ -11,24 +11,47 @@ namespace Nyx.AppSupport.Wpf
 {
     public class AppBootstrapper
     {
+        private readonly Application _app;
         private readonly ViewResolver _viewResolver;
+        private IContainer _container;
+
 
         public AppBootstrapper(Application app)
         {
+            _app = app;
             _viewResolver = new ViewResolver();
         }
 
-        public void Start()
+        public void Start<TStartViewModel>() where TStartViewModel : IViewModel
         {
-            ContainerFactory.Setup(c =>
+            var navigator = _container.Get<INavigator>();
+            navigator.NavigateTo<TStartViewModel>();
+        }
+
+        /// <exception cref="InvalidOperationException">Configuration failed</exception>
+        public void Setup(Action<INyxApplication> configAction)
+        {
+            if (configAction == null)
             {
-                c.Register<IViewResolver>().Using(_viewResolver);
+                throw new ArgumentNullException(nameof(configAction));
+            }
+
+            _container = ContainerFactory.Setup(containerConfiguration =>
+            {
+                containerConfiguration.Register<IViewResolver>().Using(_viewResolver);
+                containerConfiguration.Register<INavigator>().UsingConcreteType<DefaultNavigator>();
+
+                configAction(new NyxApplication(_app, _viewResolver, containerConfiguration));
 
                 foreach (var pair in _viewResolver)
                 {
-                    c.Register(pair.Key).UsingConcreteType(pair.Value);
+                    containerConfiguration.Register(pair.Key);
+                    containerConfiguration.Register(pair.Value);
+
                 }
             });
         }
+
+
     }
 }

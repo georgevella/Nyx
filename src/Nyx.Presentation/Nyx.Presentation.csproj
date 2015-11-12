@@ -37,11 +37,10 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbstractNotifyPropertyChanged.cs" />
     <Compile Include="Conventions\ByNameViewModelDiscoveryConvention.cs" />
-    <Compile Include="BaseViewResolver.cs" />
     <Compile Include="INavigator.cs" />
-    <Compile Include="IViewResolverConfiguration.cs" />
-    <Compile Include="ViewResolverConfiguration.cs" />
+    <Compile Include="IViewModelDiscoveryConvention.cs" />
     <Compile Include="IViewModel.cs" />
     <Compile Include="IViewResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

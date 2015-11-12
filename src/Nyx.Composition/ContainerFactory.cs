@@ -13,6 +13,7 @@ namespace Nyx.Composition
         /// <param name="c"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"><paramref name="c"/> is <see langword="null" />.</exception>
+        /// <exception cref="InvalidOperationException">Failed to setup container instance</exception>
         public static IContainer Setup(Action<IContainerConfiguration> c)
         {
             if (c == null)
@@ -21,11 +22,23 @@ namespace Nyx.Composition
             }
             var conf = new FluentContainerConfigurator();
 
-            c(conf);
+            try
+            {
+                c(conf);
+            }
+            catch (Exception exception)
+            {
+                throw new InvalidOperationException("Failed to setup container instance", exception);
+            }
 
-            var canister = new ContainerImpl(conf);
-            canister.Build();
-            return canister;
+            var container = new ContainerImpl(conf);
+
+            // register container instance
+            conf.Register<IContainer>().Using(container);
+            conf.Register<IServiceProvider>().Using(container);
+
+            container.Build();
+            return container;
         }
     }
 }

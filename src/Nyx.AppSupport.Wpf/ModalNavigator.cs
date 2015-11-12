@@ -4,17 +4,17 @@ using Nyx.Presentation;
 
 namespace Nyx.AppSupport.Wpf
 {
-    public class ModalWpfNavigator : INavigator
+    public class ModalNavigator : INavigator
     {
         private readonly IContainer _container;
         private readonly IViewResolver _viewResolver;
 
-        public ModalWpfNavigator(IContainer container, IViewResolver viewResolver)
+        public ModalNavigator(IContainer container, IViewResolver viewResolver)
         {
             _container = container;
             _viewResolver = viewResolver;
         }
-        
+
         public TViewModel NavigateTo<TViewModel>() where TViewModel : IViewModel
         {
             var viewType = _viewResolver.ResolveViewTypeFor<TViewModel>();

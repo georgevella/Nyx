@@ -4,12 +4,12 @@ using Nyx.Presentation;
 
 namespace Nyx.AppSupport.Wpf
 {
-    public class WpfNavigator : INavigator
+    public class DefaultNavigator : INavigator
     {
         private readonly IContainer _container;
         private readonly IViewResolver _viewResolver;
 
-        public WpfNavigator(IContainer container, IViewResolver viewResolver)
+        public DefaultNavigator(IContainer container, IViewResolver viewResolver)
         {
             _container = container;
             _viewResolver = viewResolver;

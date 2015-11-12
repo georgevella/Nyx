@@ -31,7 +31,7 @@ namespace Nyx.Composition.Impl
         public IServiceRegistration Register(Type type)
         {
             var registrationType = typeof(ServiceRegistration<>).MakeGenericType(type);
-            var reg = (IServiceRegistration)Activator.CreateInstance(registrationType);
+            var reg = (IServiceRegistration)Activator.CreateInstance(registrationType, this);
 
             _registrations.Add((IInternalServiceRegistration)reg);
 

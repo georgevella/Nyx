@@ -14,12 +14,15 @@ namespace Nyx.Composition.Impl
         private Type _targetType;
         private string _name;
         private TService _staticInstance;
+        private readonly Type _contractType;
 
         public Type TargetType => _targetType;
 
-        public Type ContractType { get; }
+        public Type ContractType => _contractType;
 
         public string Name => _name;
+
+        public bool SupportsInstanceBuilder => _targetType != null;
 
         public bool Equals(ServiceRegistration<TService> other)
         {
@@ -31,7 +34,7 @@ namespace Nyx.Composition.Impl
             {
                 return true;
             }
-            return TargetType == other.TargetType && ContractType == other.ContractType && string.Equals(Name, other.Name);
+            return _targetType == other.TargetType && _contractType == other.ContractType && string.Equals(Name, other.Name);
         }
 
         public override bool Equals(object obj)
@@ -52,8 +55,8 @@ namespace Nyx.Composition.Impl
         {
             unchecked
             {
-                var hashCode = (_targetType != null ? TargetType.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (ContractType?.GetHashCode() ?? 0);
+                var hashCode = _targetType?.GetHashCode() ?? 0;
+                hashCode = (hashCode * 397) ^ (_contractType?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ (Name?.GetHashCode() ?? 0);
                 return hashCode;
             }
@@ -62,7 +65,12 @@ namespace Nyx.Composition.Impl
         public ServiceRegistration(FluentContainerConfigurator parentConfiguration)
         {
             _parentConfiguration = parentConfiguration;
-            ContractType = typeof(TService);
+            _contractType = typeof(TService);
+
+            if (!ContractType.GetTypeInfo().IsInterface)
+            {
+                _targetType = _contractType;
+            }
         }
 
         public IServiceRegistration<TService> UsingConcreteType(Type type)
@@ -147,8 +155,7 @@ namespace Nyx.Composition.Impl
             if (_staticInstance != null)
                 return new StaticServiceFactory(_staticInstance);
 
-            var targetType = TargetType;
-            var typeInfo = targetType.GetTypeInfo();
+            var typeInfo = _targetType.GetTypeInfo();
             var constructors = typeInfo.DeclaredConstructors.ToList();
 
             if (constructors.Count == 1)
@@ -157,7 +164,7 @@ namespace Nyx.Composition.Impl
                 var parameters = constructor.GetParameters();
                 if (parameters.Length == 0)
                 {
-                    return new SimpleServiceFactory(ContractType, constructor);
+                    return new SimpleServiceFactory(_contractType, constructor);
                 }
                 return new ConstructorInjectionServiceFactory(constructor, _parentConfiguration);
             }

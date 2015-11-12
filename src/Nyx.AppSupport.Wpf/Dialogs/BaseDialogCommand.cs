@@ -6,12 +6,12 @@ using System.Windows.Input;
 
 namespace Nyx.AppSupport.Wpf.Dialogs
 {
-    public class Dialog : FrameworkElement, INotifyPropertyChanged, ICommand
+    public class BaseDialogCommand : FrameworkElement, ICommand
     {
         public static readonly DependencyProperty AcceptCommandProperty = DependencyProperty.RegisterAttached(
             "AcceptCommand",
             typeof(ICommand),
-            typeof(Dialog),
+            typeof(BaseDialogCommand),
             new PropertyMetadata(null)
             );
 
@@ -71,12 +71,8 @@ namespace Nyx.AppSupport.Wpf.Dialogs
 
         protected void OnPropertyChanged(string propertyName)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
-
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            var handler = PropertyChanged;
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         void ICommand.Execute(object parameter)

@@ -2,13 +2,13 @@ using System.Windows;
 
 namespace Nyx.AppSupport.Wpf.Dialogs
 {
-    public abstract class BaseFileDialog : Dialog
+    public abstract class BaseFileDialog : BaseDialogCommand
     {
         public static readonly DependencyProperty PathProperty = DependencyProperty.RegisterAttached(
             "Path",
             typeof(string),
             typeof(BaseFileDialog),
-            new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault )
+            new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
             );
         public static void SetPath(FrameworkElement dObject, string path)
         {
@@ -20,7 +20,7 @@ namespace Nyx.AppSupport.Wpf.Dialogs
             return dObject.GetValue(PathProperty) as string;
         }
 
-        
+
         public string Path
         {
             get
@@ -41,6 +41,6 @@ namespace Nyx.AppSupport.Wpf.Dialogs
         public bool EnableHelpButton { get; set; }
         public bool AddExtension { get; set; }
 
-        
+
     }
 }
