@@ -1,13 +1,15 @@
 using System;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 
-namespace Nyx.AppSupport.Wpf.Dialogs
+namespace Nyx.AppSupport.Wpf.Dialogs.Impl
 {
-    public class BaseDialogCommand : FrameworkElement, ICommand
+    internal abstract class BaseDialogCommand : DependencyObject, ICommand, INotifyPropertyChanged
     {
+        #region AcceptCommand Dependency Property
         public static readonly DependencyProperty AcceptCommandProperty = DependencyProperty.RegisterAttached(
             "AcceptCommand",
             typeof(ICommand),
@@ -25,8 +27,6 @@ namespace Nyx.AppSupport.Wpf.Dialogs
             return dObject.GetValue(AcceptCommandProperty) as ICommand;
         }
 
-        //////////////////////////////////////////////////////////////////////////
-
         /// <summary>
         /// Defines a command which is triggered when the user presses the accept button on the dialog (i.e. the dialog returns DialogResult.Ok, or DialogResult.Yes)
         /// </summary>
@@ -41,46 +41,55 @@ namespace Nyx.AppSupport.Wpf.Dialogs
                 SetValue(AcceptCommandProperty, value);
             }
         }
+        #endregion
 
-        //////////////////////////////////////////////////////////////////////////
+        protected abstract DialogResult ExecuteShowDialog(object parameter);
 
-        private void DoShowDialog(object parameter)
+        protected virtual void OnDialogClosed(DialogResult dialogResult)
         {
-            switch (this.ExecuteShowDialog(parameter))
-            {
-                case DialogResult.OK:
-                case DialogResult.Yes:
-                    if (AcceptCommand != null)
-                    {
-                        AcceptCommand.Execute(null);
-                    }
-                    break;
-                default:
-                    break;
-            }
+
         }
 
-        protected virtual DialogResult ExecuteShowDialog(object parameter)
+        protected virtual void OnDialogCancelled()
         {
-            return DialogResult.OK;
+
         }
 
-        //////////////////////////////////////////////////////////////////////////
+        protected virtual void OnDialogAccepted()
+        {
+
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChanged(string propertyName)
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
             handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+
+
         void ICommand.Execute(object parameter)
         {
-            DoShowDialog(parameter);
+            var dialogResult = this.ExecuteShowDialog(parameter);
+
+            OnDialogClosed(dialogResult);
+
+            switch (dialogResult)
+            {
+                case DialogResult.OK:
+                case DialogResult.Yes:
+                    OnDialogAccepted();
+                    AcceptCommand?.Execute(null);
+                    break;
+                default:
+                    OnDialogCancelled();
+                    break;
+            }
         }
 
-        public bool CanExecute(object parameter)
+        public virtual bool CanExecute(object parameter)
         {
             return true;
         }

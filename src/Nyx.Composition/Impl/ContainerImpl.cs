@@ -7,7 +7,7 @@ namespace Nyx.Composition.Impl
     /// </summary>
     internal class ContainerImpl : IContainer, IServiceProvider
     {
-        private readonly FluentContainerConfigurator _configuration;
+        public FluentContainerConfigurator Configuration { get; }
         private readonly Dictionary<ServiceKey, IServiceFactory> _factories = new Dictionary<ServiceKey, IServiceFactory>();
         private readonly Dictionary<ServiceKey, IInstanceBuilder> _instanceBuilders = new Dictionary<ServiceKey, IInstanceBuilder>();
 
@@ -17,7 +17,7 @@ namespace Nyx.Composition.Impl
         /// <param name="configuration"></param>
         public ContainerImpl(FluentContainerConfigurator configuration)
         {
-            _configuration = configuration;
+            Configuration = configuration;
         }
 
 
@@ -84,7 +84,7 @@ namespace Nyx.Composition.Impl
         /// </summary>
         public void Build()
         {
-            foreach (var reg in _configuration.Registrations)
+            foreach (var reg in Configuration.Registrations)
             {
                 var key = new ServiceKey(reg);
                 _factories.Add(key, reg.GetObjectFactory());
@@ -131,29 +131,6 @@ namespace Nyx.Composition.Impl
         {
             var context = new ServiceInstantiationGraph(this);
             return Get(context, type);
-        }
-    }
-
-    internal class Lifecycle : ILifecycle
-    {
-        private readonly List<IDisposable> _disposables = new List<IDisposable>();
-        public void Dispose()
-        {
-            foreach (var item in _disposables)
-            {
-                item.Dispose();
-            }
-
-            _disposables.Clear();
-        }
-
-        public void Register(object instance)
-        {
-            var disposable = instance as IDisposable;
-            if (disposable != null)
-            {
-                _disposables.Add(disposable);
-            }
         }
     }
 }

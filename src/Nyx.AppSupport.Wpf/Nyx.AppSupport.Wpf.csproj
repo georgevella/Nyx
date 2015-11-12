@@ -62,11 +62,13 @@
     <Compile Include="Commands\BaseCommand.cs" />
     <Compile Include="Commands\CommandReference.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
-    <Compile Include="Dialogs\BaseFileDialog.cs" />
-    <Compile Include="Dialogs\BaseDialogCommand.cs" />
-    <Compile Include="Dialogs\OpenFileDialog.cs" />
-    <Compile Include="Dialogs\SaveFileDialog.cs" />
+    <Compile Include="Dialogs\Impl\BaseDialogCommand.cs" />
+    <Compile Include="Dialogs\Impl\BaseFileDialogCommand.cs" />
+    <Compile Include="Dialogs\IOpenFileDialogCommand.cs" />
+    <Compile Include="Dialogs\ISaveFileDialogCommand.cs" />
+    <Compile Include="Dialogs\Impl\OpenFileDialogCommand.cs" />
     <Compile Include="Bootstrapper\In.cs" />
+    <Compile Include="Dialogs\Impl\SaveFileDialogCommand.cs" />
     <Compile Include="INyxApplication.cs" />
     <Compile Include="ModalNavigator.cs" />
     <Compile Include="NyxApplication.cs" />

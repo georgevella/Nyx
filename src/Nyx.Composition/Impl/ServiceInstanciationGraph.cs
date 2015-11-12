@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
 
 namespace Nyx.Composition.Impl
 {
@@ -18,6 +20,11 @@ namespace Nyx.Composition.Impl
         public ServiceInstantiationGraph(ContainerImpl container)
         {
             _container = container;
+        }
+
+        public bool IsTypeSupported(Type contractType)
+        {
+            return _container.Configuration.Registrations.Any(x => x.ContractType == contractType);
         }
 
         /// <summary>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Nyx.AppSupport.Wpf.Dialogs;
 using Nyx.Composition;
 using Nyx.Presentation;
 
@@ -40,6 +41,8 @@ namespace Nyx.AppSupport.Wpf
             {
                 containerConfiguration.Register<IViewResolver>().Using(_viewResolver);
                 containerConfiguration.Register<INavigator>().UsingConcreteType<DefaultNavigator>();
+                containerConfiguration.Register<ISaveFileDialogCommand>().UsingConcreteType<SaveFileDialogCommand>();
+                containerConfiguration.Register<IOpenFileDialogCommand>().UsingConcreteType<OpenFileDialogCommand>();
 
                 configAction(new NyxApplication(_app, _viewResolver, containerConfiguration));
 

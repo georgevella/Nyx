@@ -42,6 +42,7 @@
     <Compile Include="Impl\InstanceBuilder.cs" />
     <Compile Include="Impl\FluentContainerConfigurator.cs" />
     <Compile Include="Impl\ContainerImpl.cs" />
+    <Compile Include="Impl\Lifecycle.cs" />
     <Compile Include="Impl\ServiceRegistration.cs" />
     <Compile Include="Impl\ServiceInstanciationGraph.cs" />
     <Compile Include="IContainer.cs" />

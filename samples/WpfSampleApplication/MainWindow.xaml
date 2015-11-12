@@ -1,12 +1,68 @@
-﻿<Window x:Class="WpfSampleApplication.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfSampleApplication"
-        mc:Ignorable="d"
+        xmlns:Dialogs="clr-namespace:Nyx.AppSupport.Wpf.Dialogs;assembly=Nyx.AppSupport.Wpf"
+        xmlns:viewModels="clr-namespace:WpfSampleApplication.ViewModels"
+        x:Class="WpfSampleApplication.MainWindow"
+        mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="270*"/>
+            <RowDefinition Height="50*"/>
+        </Grid.RowDefinitions>
+        <TabControl x:Name="tabControl" HorizontalAlignment="Stretch" Height="Auto" Margin="10" VerticalAlignment="Stretch" Width="Auto">
+            <TabItem Header="Dialogs" Height="22" VerticalAlignment="Top">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Open File Dialog" Grid.Row="0" Margin="10,2" />
+
+                        <TextBox TextWrapping="Wrap" Grid.Row="1"
+                             Text="{Binding Path=OpenFileCommand.Path}" VerticalAlignment="Top" Margin="10,5"/>
+
+                        <Button Content="Load File" HorizontalAlignment="Right"
+                            Grid.Row="2"
+                            VerticalAlignment="Stretch" Width="75" Height="25" Command="{Binding Path=OpenFileCommand}" Margin="0,0,10,2" >
+                        </Button>
+                    </Grid>
+
+                    <Grid Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Open File Dialog" Grid.Row="0" Margin="10,2" />
+
+                        <TextBox TextWrapping="Wrap" Grid.Row="1"
+                             Text="{Binding Path=OpenFileCommand.Path}" VerticalAlignment="Top" Margin="10,5"/>
+
+                        <Button Content="Save File" HorizontalAlignment="Right"
+                            Grid.Row="2"
+                            VerticalAlignment="Stretch" Width="75" Height="25" Command="{Binding Path=SaveFileCommand}" Margin="0,0,10,2" >
+                        </Button>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="TabItem">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+        </TabControl>
+
     </Grid>
 </Window>
