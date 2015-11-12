@@ -208,5 +208,39 @@ namespace Nyx.Composition.Tests
             var target = (StubWithDependency2)stub;
             target.Dependency.Should().NotBeNull().And.BeOfType<ChildStubDependency>();
         }
+
+        [Fact]
+        public void RegisteringAConcreteServiceWithStaticTargetShouldAlwaysReturnSameInstance()
+        {
+            var stubDependency = new ChildStubDependency();
+
+            var pyxis = ContainerFactory.Setup(c =>
+            {
+                c.Register<IStub>().UsingConcreteType<StubWithDependency2>();
+                c.Register<StubDependency>().Using(stubDependency);
+            });
+
+            IStub stub = null, stub2 = null;
+
+            Action a = () => stub = pyxis.Get<IStub>();
+
+            a.ShouldNotThrow();
+
+            stub2 = stub;
+            a.ShouldNotThrow();
+
+            stub.Should().NotBeNull().And.BeOfType<StubWithDependency2>();
+            stub2.Should().NotBeNull().And.BeOfType<StubWithDependency2>();
+
+            stub2.Should().NotBeSameAs(stub);
+
+            var target1 = (StubWithDependency2)stub;
+            target1.Dependency.Should().NotBeNull().And.BeSameAs(stubDependency);
+
+            var target2 = (StubWithDependency2)stub;
+            target2.Dependency.Should().NotBeNull().And.BeSameAs(stubDependency);
+
+            target1.Dependency.Should().BeSameAs(target2.Dependency);
+        }
     }
 }
