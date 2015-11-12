@@ -1,4 +1,6 @@
 namespace Nyx.Composition.Tests.Stubs
 {
-    class StubDependency : IStubDependency { }
+    public class StubDependency : IStubDependency { }
+
+    class ChildStubDependency : StubDependency { }
 }

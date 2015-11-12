@@ -110,18 +110,6 @@ namespace Nyx.Composition.Tests
         }
 
         [Fact]
-        public void SetupMethodShouldSupportOnlyInterfaces()
-        {
-            Action a = () => ContainerFactory.Setup(
-                c =>
-                {
-                    c.Register<Stub>();
-                });
-
-            a.ShouldThrow<InvalidOperationException>();
-        }
-
-        [Fact]
         public void ContainerShouldInjectAllServicableProperties()
         {
             var pyxis = ContainerFactory.Setup(c =>
@@ -183,7 +171,42 @@ namespace Nyx.Composition.Tests
 
             a.ShouldNotThrow();
             stub.Should().NotBeNull().And.BeOfType<Stub>();
+        }
 
+        [Fact]
+        public void RegisteringAConcreteServiceWithAConcreteSubType()
+        {
+            var pyxis = ContainerFactory.Setup(c =>
+            {
+                c.Register<Stub>().UsingConcreteType<Stub2>();
+            });
+
+            IStub stub = null;
+
+            Action a = () => stub = pyxis.Get<Stub>();
+
+            a.ShouldNotThrow();
+            stub.Should().NotBeNull().And.BeOfType<Stub2>();
+        }
+
+
+        [Fact]
+        public void RegisteringAConcreteServiceWithAConcreteSubType_Dependencies()
+        {
+            var pyxis = ContainerFactory.Setup(c =>
+            {
+                c.Register<IStub>().UsingConcreteType<StubWithDependency2>();
+                c.Register<StubDependency>().UsingConcreteType<ChildStubDependency>();
+            });
+
+            IStub stub = null;
+
+            Action a = () => stub = pyxis.Get<IStub>();
+
+            a.ShouldNotThrow();
+            stub.Should().NotBeNull().And.BeOfType<StubWithDependency2>();
+            var target = (StubWithDependency2)stub;
+            target.Dependency.Should().NotBeNull().And.BeOfType<ChildStubDependency>();
         }
     }
 }

@@ -17,10 +17,6 @@ namespace Nyx.Composition.Impl
         /// <exception cref="InvalidOperationException"><typeparamref name="TService"/> is not an interface.</exception>
         public IServiceRegistration<TService> Register<TService>()
         {
-            var type = typeof(TService);
-            if (!type.GetTypeInfo().IsInterface)
-                throw new InvalidOperationException();
-
             var reg = new ServiceRegistration<TService>(this);
 
             _registrations.Add(reg);

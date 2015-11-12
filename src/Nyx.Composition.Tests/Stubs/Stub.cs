@@ -7,4 +7,9 @@ namespace Nyx.Composition.Tests.Stubs
             throw new System.NotImplementedException();
         }
     }
+
+    public class Stub2 : Stub
+    {
+
+    }
 }
