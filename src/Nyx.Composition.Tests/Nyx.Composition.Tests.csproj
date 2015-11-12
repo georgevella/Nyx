@@ -96,6 +96,7 @@
     <Compile Include="Stubs\StubWithMultipleCtors.cs" />
     <Compile Include="Stubs\StubWithMultipleCtorsAndOptionalParameter.cs" />
     <Compile Include="Stubs\StubWithPropInjection.cs" />
+    <Compile Include="Stubs\TransientTestStub.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
