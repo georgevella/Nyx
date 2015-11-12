@@ -1,10 +1,10 @@
 namespace Nyx.Composition.Tests.Stubs
 {
-    public class Stub2 : IStub
+    public class StubWithDependency : IStub
     {
         internal readonly IStubDependency Dependency;
 
-        public Stub2(IStubDependency dependency)
+        public StubWithDependency(IStubDependency dependency)
         {
             Dependency = dependency;
         }

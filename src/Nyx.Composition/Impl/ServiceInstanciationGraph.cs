@@ -11,7 +11,7 @@ namespace Nyx.Composition.Impl
     internal class ServiceInstantiationGraph
     {
         private readonly ContainerImpl _container;
-        private readonly Dictionary<ServiceKey, object> _instances = new Dictionary<ServiceKey, object>();
+        public Dictionary<ServiceKey, object> Instances { get; } = new Dictionary<ServiceKey, object>();
 
         /// <summary>
         /// Creates an instance of <c>ServiceInstantiationGraph</c>
@@ -35,11 +35,8 @@ namespace Nyx.Composition.Impl
         public object Get(Type contractType)
         {
             var key = new ServiceKey(contractType);
-            if (_instances.ContainsKey(key))
-                return _instances[key];
-
             var instance = _container.Get(this, contractType);
-            _instances[key] = instance;
+            Instances[key] = instance;
 
             return instance;
 

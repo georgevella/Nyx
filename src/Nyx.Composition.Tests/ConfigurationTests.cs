@@ -23,7 +23,7 @@ namespace Nyx.Composition.Tests
         {
             var cfg = new FluentContainerConfigurator();
             var reg1 = cfg.Register<IStub>().UsingConcreteType<Stub>();
-            var reg2 = cfg.Register<IStub>().UsingConcreteType<Stub2>();
+            var reg2 = cfg.Register<IStub>().UsingConcreteType<StubWithDependency>();
 
             cfg.Registrations.Should().HaveCount(2).And.Contain(x => x.Equals(reg1)).And.Contain(x => x.Equals(reg2));
         }
@@ -33,7 +33,7 @@ namespace Nyx.Composition.Tests
         {
             var cfg = new FluentContainerConfigurator();
             var reg1 = cfg.Register<IStub>().UsingConcreteType<Stub>();
-            var reg2 = cfg.Register<IStub>().UsingConcreteType<Stub2>();
+            var reg2 = cfg.Register<IStub>().UsingConcreteType<StubWithDependency>();
 
             reg1.Should().NotBe(reg2);
         }

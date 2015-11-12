@@ -8,6 +8,7 @@ namespace Nyx.Composition.Impl
     internal class ContainerImpl : IContainer, IServiceProvider
     {
         public FluentContainerConfigurator Configuration { get; }
+        private readonly Dictionary<ServiceKey, IInternalServiceRegistration> _registrations = new Dictionary<ServiceKey, IInternalServiceRegistration>();
         private readonly Dictionary<ServiceKey, IServiceFactory> _factories = new Dictionary<ServiceKey, IServiceFactory>();
         private readonly Dictionary<ServiceKey, IInstanceBuilder> _instanceBuilders = new Dictionary<ServiceKey, IInstanceBuilder>();
 
@@ -87,6 +88,7 @@ namespace Nyx.Composition.Impl
             foreach (var reg in Configuration.Registrations)
             {
                 var key = new ServiceKey(reg);
+                _registrations.Add(key, reg);
                 _factories.Add(key, reg.GetObjectFactory());
                 if (reg.SupportsInstanceBuilder)
                     _instanceBuilders.Add(key, reg.GetInstanceBuilder());
@@ -112,7 +114,15 @@ namespace Nyx.Composition.Impl
                 throw new ArgumentNullException(nameof(instantiationGraph));
             }
             var key = new ServiceKey(contractType, name);
+            var reg = _registrations[key];
             var factory = _factories[key];
+
+            if (!reg.IsTransient)
+            {
+                // registration is not transient, check into graph for an instance and return that
+                if (instantiationGraph.Instances.ContainsKey(key))
+                    return instantiationGraph.Instances[key];
+            }
 
             var instance = factory.Create(instantiationGraph);
 

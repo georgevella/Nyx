@@ -1,6 +1,6 @@
 namespace Nyx.Composition.Tests.Stubs
 {
-    public class NamedStub : IStub
+    public class AnotherStub : IStub
     {
         public void Initializer()
         {

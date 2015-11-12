@@ -88,9 +88,9 @@
     <Compile Include="Stubs\IAnotherDependency.cs" />
     <Compile Include="Stubs\IStub.cs" />
     <Compile Include="Stubs\IStubDependency.cs" />
-    <Compile Include="Stubs\NamedStub.cs" />
+    <Compile Include="Stubs\AnotherStub.cs" />
     <Compile Include="Stubs\Stub.cs" />
-    <Compile Include="Stubs\Stub2.cs" />
+    <Compile Include="Stubs\StubWithDependency.cs" />
     <Compile Include="Stubs\Stub2WithOptionalParameter.cs" />
     <Compile Include="Stubs\StubDependency.cs" />
     <Compile Include="Stubs\StubWithMultipleCtors.cs" />

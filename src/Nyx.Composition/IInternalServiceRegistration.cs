@@ -21,6 +21,7 @@ namespace Nyx.Composition
         Type TargetType { get; }
 
         bool SupportsInstanceBuilder { get; }
+        bool IsTransient { get; }
 
         /// <summary>
         /// Returns an instance builder instance that can be used to populate properties in a constructed contract
@@ -36,49 +37,5 @@ namespace Nyx.Composition
         /// An instance of either <c>SimpleServiceFactory</c> or <c>ConstructorInjectionServiceFactory</c>
         /// </returns>
         IServiceFactory GetObjectFactory();
-    }
-
-    public interface IServiceRegistration
-    {
-        IServiceRegistration Using(object serviceInstance);
-
-        IServiceRegistration UsingConcreteType(Type type);
-
-        IServiceRegistration Named(string name);
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <typeparam name="TService"></typeparam>
-    public interface IServiceRegistration<TService>
-    {
-        /// <summary>
-        /// </summary>
-        /// <typeparam name="TConcreteType"></typeparam>
-        /// <returns>Self instance of <see cref="IInternalServiceRegistration"/></returns>
-        IServiceRegistration<TService> UsingConcreteType<TConcreteType>() where TConcreteType : class, TService;
-
-        IServiceRegistration<TService> UsingConcreteType(Type type);
-
-        /// <summary>        
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns>Self instance of <see cref="IInternalServiceRegistration"/></returns>
-        IServiceRegistration<TService> Named(string name);
-
-        /// <summary>
-        /// There will be only one instance of the registered service type during the lifetime of that container instance.
-        /// </summary>
-        /// <returns>Self instance of <see cref="IInternalServiceRegistration"/></returns>
-        IServiceRegistration<TService> AsSingleton();
-
-        /// <summary>
-        /// A new instance of the service type will be created for each request
-        /// </summary>
-        /// <returns>Self instance of <see cref="IInternalServiceRegistration"/></returns>
-        IServiceRegistration<TService> AsTransient();
-
-        IServiceRegistration<TService> InitializeWith(Action<TService> initializerMethod);
-        IServiceRegistration<TService> Using(TService serviceInstance);
     }
 }

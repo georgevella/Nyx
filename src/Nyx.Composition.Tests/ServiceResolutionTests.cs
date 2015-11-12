@@ -26,15 +26,15 @@ namespace Nyx.Composition.Tests
         {
             var pyxis = ContainerFactory.Setup(c =>
             {
-                c.Register<IStub>().UsingConcreteType<Stub2>();
+                c.Register<IStub>().UsingConcreteType<StubWithDependency>();
                 c.Register<IStubDependency>().UsingConcreteType<StubDependency>();
             });
 
             var testobject = pyxis.Get<IStub>();
 
-            testobject.Should().BeOfType<Stub2>();
+            testobject.Should().BeOfType<StubWithDependency>();
 
-            var stub2 = (Stub2)testobject;
+            var stub2 = (StubWithDependency)testobject;
             stub2.Dependency.Should().NotBeNull();
         }
 
@@ -43,7 +43,7 @@ namespace Nyx.Composition.Tests
         {
             Action a = () => ContainerFactory.Setup(c =>
             {
-                c.Register<IStub>().UsingConcreteType<Stub2>();
+                c.Register<IStub>().UsingConcreteType<StubWithDependency>();
 
             });
 
@@ -159,12 +159,12 @@ namespace Nyx.Composition.Tests
         {
             var pyxis = ContainerFactory.Setup(c =>
             {
-                c.Register<IStub>().UsingConcreteType<NamedStub>().Named("stub1");
+                c.Register<IStub>().UsingConcreteType<AnotherStub>().Named("stub1");
                 c.Register<IStub>().UsingConcreteType<DisposableStub>().Named("stub2");
             });
 
             var stub = pyxis.Get<IStub>("stub1");
-            stub.Should().BeOfType<NamedStub>();
+            stub.Should().BeOfType<AnotherStub>();
             stub = pyxis.Get<IStub>("stub2");
             stub.Should().BeOfType<DisposableStub>();
         }
@@ -174,7 +174,7 @@ namespace Nyx.Composition.Tests
         {
             var pyxis = ContainerFactory.Setup(c =>
             {
-                c.Register(typeof(IStub)).Using(typeof(Stub));
+                c.Register(typeof(IStub)).UsingConcreteType(typeof(Stub));
             });
 
             IStub stub = null;
@@ -183,6 +183,23 @@ namespace Nyx.Composition.Tests
 
             a.ShouldNotThrow();
             stub.Should().NotBeNull().And.BeOfType<Stub>();
+
+        }
+    }
+
+    public class TransientTestStub : IStub
+    {
+        public IStubDependency Dependency1 { get; set; }
+        public IStubDependency Dependency2 { get; set; }
+
+        public TransientTestStub(IStubDependency dependency1, IStubDependency dependency2)
+        {
+            Dependency1 = dependency1;
+            Dependency2 = dependency2;
+        }
+
+        public void Initializer()
+        {
 
         }
     }

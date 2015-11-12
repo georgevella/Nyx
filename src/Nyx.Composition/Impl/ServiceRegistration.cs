@@ -15,6 +15,7 @@ namespace Nyx.Composition.Impl
         private string _name;
         private TService _staticInstance;
         private readonly Type _contractType;
+        public bool IsTransient { get; private set; }
 
         public Type TargetType => _targetType;
 
@@ -95,6 +96,9 @@ namespace Nyx.Composition.Impl
             if (serviceInstance == null)
                 throw new ArgumentNullException(nameof(serviceInstance));
 
+            if (serviceInstance is Type)
+                throw new InvalidOperationException("Use UsingConcreteType() instead when providing Type information");
+
             if (!(serviceInstance is TService))
                 throw new InvalidOperationException("Invalid instance type");
 
@@ -134,7 +138,9 @@ namespace Nyx.Composition.Impl
 
         public IServiceRegistration<TService> AsTransient()
         {
-            throw new NotImplementedException();
+            IsTransient = true;
+
+            return this;
         }
 
         public IServiceRegistration<TService> InitializeWith(Action<TService> initializerMethod)

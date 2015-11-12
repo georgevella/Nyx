@@ -21,11 +21,11 @@ namespace Nyx.Composition.Impl
             if (!type.GetTypeInfo().IsInterface)
                 throw new InvalidOperationException();
 
-            var pyxisRegistration = new ServiceRegistration<TService>(this);
+            var reg = new ServiceRegistration<TService>(this);
 
-            _registrations.Add(pyxisRegistration);
+            _registrations.Add(reg);
 
-            return pyxisRegistration;
+            return reg;
         }
 
         public IServiceRegistration Register(Type type)
