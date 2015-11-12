@@ -22,6 +22,8 @@ namespace WpfSampleApplication
             bootstrapper.Setup(c =>
             {
                 c.UsingDefaultConventions().AutoDiscoverViewModels(In.ThisAssembly);
+
+                c.AutoDiscoverCommands(In.ThisAssembly);
             });
 
             bootstrapper.Start<MainViewModel>();

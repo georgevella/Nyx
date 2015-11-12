@@ -69,6 +69,7 @@
     <Compile Include="Dialogs\Impl\OpenFileDialogCommand.cs" />
     <Compile Include="Bootstrapper\In.cs" />
     <Compile Include="Dialogs\Impl\SaveFileDialogCommand.cs" />
+    <Compile Include="IApplicationServices.cs" />
     <Compile Include="INyxApplicationConfiguration.cs" />
     <Compile Include="ModalNavigator.cs" />
     <Compile Include="NyxApplicationConfiguration.cs" />

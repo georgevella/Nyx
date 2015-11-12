@@ -38,9 +38,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractNotifyPropertyChanged.cs" />
-    <Compile Include="Conventions\ByNameViewModelDiscoveryConvention.cs" />
+    <Compile Include="Conventions\ByNameDiscoveryConvention.cs" />
     <Compile Include="INavigator.cs" />
-    <Compile Include="IViewModelDiscoveryConvention.cs" />
+    <Compile Include="IDiscoveryConvention.cs" />
     <Compile Include="IViewModel.cs" />
     <Compile Include="IViewResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

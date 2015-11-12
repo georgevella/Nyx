@@ -12,7 +12,7 @@ namespace Nyx.AppSupport.Wpf
         private readonly Application _app;
         private readonly IViewResolver _viewResolver;
         private readonly IContainerConfiguration _containerConfiguration;
-        private ByNameViewModelDiscoveryConvention _convention;
+        private ByNameDiscoveryConvention _convention;
 
         public NyxApplicationConfiguration(Application app, IViewResolver viewResolver, IContainerConfiguration containerConfiguration)
         {
@@ -25,16 +25,18 @@ namespace Nyx.AppSupport.Wpf
         {
             if (_convention == null)
             {
-                _convention = new ByNameViewModelDiscoveryConvention();
+                _convention = new ByNameDiscoveryConvention();
             }
 
-            _convention.FindAndRegisterMappings(_viewResolver, assembly);
+            var mappings = _convention.DiscoverViewModelsAndViews(assembly);
+            foreach (var m in mappings)
+                _viewResolver.AddMapping(m.Key, m.Value);
         }
 
 
         public INyxApplicationConfiguration UsingDefaultConventions()
         {
-            _convention = new ByNameViewModelDiscoveryConvention();
+            _convention = new ByNameDiscoveryConvention();
             return this;
         }
 
@@ -47,6 +49,30 @@ namespace Nyx.AppSupport.Wpf
         public INyxApplicationConfiguration AutoDiscoverViewModels()
         {
             AutoDiscoverViewModelsImpl(_app.GetType().Assembly);
+            return this;
+        }
+
+        public INyxApplicationConfiguration AutoDiscoverCommands(Assembly assembly)
+        {
+            AutoDiscoverCommandsImpl(assembly);
+            return this;
+        }
+
+        private void AutoDiscoverCommandsImpl(Assembly assembly)
+        {
+            if (_convention == null)
+            {
+                _convention = new ByNameDiscoveryConvention();
+            }
+
+            var commands = _convention.DiscoverCommands(assembly);
+            foreach (var commandType in commands)
+                _containerConfiguration.Register(commandType);
+        }
+
+        public INyxApplicationConfiguration AutoDiscoverCommands()
+        {
+            AutoDiscoverCommandsImpl(_app.GetType().Assembly);
             return this;
         }
 

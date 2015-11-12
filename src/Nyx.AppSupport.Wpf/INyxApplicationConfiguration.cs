@@ -8,5 +8,7 @@ namespace Nyx.AppSupport.Wpf
         INyxApplicationConfiguration UsingDefaultConventions();
         INyxApplicationConfiguration AutoDiscoverViewModels(Assembly assembly);
         INyxApplicationConfiguration AutoDiscoverViewModels();
+        INyxApplicationConfiguration AutoDiscoverCommands(Assembly assembly);
+        INyxApplicationConfiguration AutoDiscoverCommands();
     }
 }

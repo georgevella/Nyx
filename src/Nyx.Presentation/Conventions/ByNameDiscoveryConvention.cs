@@ -2,15 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Windows.Input;
 
 namespace Nyx.Presentation.Conventions
 {
     /// <summary>
     /// </summary>
-    public class ByNameViewModelDiscoveryConvention : IViewModelDiscoveryConvention
+    public class ByNameDiscoveryConvention : IDiscoveryConvention
     {
 
-        public void FindAndRegisterMappings(IViewResolver viewResolver, Assembly assembly)
+        public IEnumerable<KeyValuePair<Type, Type>> DiscoverViewModelsAndViews(Assembly assembly)
         {
             var filter = assembly.DefinedTypes
                 .Where(t => !t.IsInterface && t.IsClass && !t.IsAbstract)
@@ -44,21 +45,23 @@ namespace Nyx.Presentation.Conventions
                 }
             }
 
-            var mappings = from item in viewModelMap
-                           let vmKey = item.Key
-                           where viewMap.ContainsKey(vmKey)
-                           let vType = viewMap[vmKey]
-                           let vmType = item.Value
-                           select new
-                           {
-                               ViewType = vType,
-                               ViewModelType = vmType
-                           };
+            return from item in viewModelMap
+                   let vmKey = item.Key
+                   where viewMap.ContainsKey(vmKey)
+                   let viewType = viewMap[vmKey]
+                   let viewModelType = item.Value
+                   select new KeyValuePair<Type, Type>(viewModelType, viewType);
 
-            foreach (var mapping in mappings)
-            {
-                viewResolver.AddMapping(mapping.ViewModelType, mapping.ViewType);
-            }
+        }
+
+        public IEnumerable<Type> DiscoverCommands(Assembly assembly)
+        {
+            var filter = assembly.DefinedTypes
+                .Where(t => !t.IsInterface && t.IsClass && !t.IsAbstract)
+                .Where(t => t.ImplementedInterfaces.Contains(typeof(ICommand)))
+                .Select(t => t.AsType());
+
+            return filter;
         }
     }
 }

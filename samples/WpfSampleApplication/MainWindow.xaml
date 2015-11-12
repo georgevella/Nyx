@@ -27,7 +27,7 @@
                             <RowDefinition Height="Auto"></RowDefinition>
                             <RowDefinition Height="Auto"></RowDefinition>
                             <RowDefinition Height="Auto"></RowDefinition>
-                            
+
                         </Grid.RowDefinitions>
                         <TextBlock Text="Open File Dialog" Grid.Row="0" Margin="10,2" />
 
@@ -63,6 +63,11 @@
                 <Grid Background="#FFE5E5E5"/>
             </TabItem>
         </TabControl>
+        <Button Content="Exit" HorizontalAlignment="Left" Margin="425,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="82" Height="30"
+                Command="{Binding Path=ExitAppCommand}"
+                >
+            
+        </Button>
 
     </Grid>
 </Window>

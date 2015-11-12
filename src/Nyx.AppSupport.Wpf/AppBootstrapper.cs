@@ -44,6 +44,9 @@ namespace Nyx.AppSupport.Wpf
                 containerConfiguration.Register<ISaveFileDialogCommand>().UsingConcreteType<SaveFileDialogCommand>();
                 containerConfiguration.Register<IOpenFileDialogCommand>().UsingConcreteType<OpenFileDialogCommand>();
 
+                containerConfiguration.Register<Application>().Using(_app);
+                containerConfiguration.Register<IApplicationServices>().UsingConcreteType<ApplicationServices>();
+
                 configAction(new NyxApplicationConfiguration(_app, _viewResolver, containerConfiguration));
 
                 foreach (var pair in _viewResolver)
