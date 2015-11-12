@@ -7,14 +7,14 @@ using Nyx.Presentation.Conventions;
 
 namespace Nyx.AppSupport.Wpf
 {
-    class NyxApplication : INyxApplication
+    class NyxApplicationConfiguration : INyxApplicationConfiguration
     {
         private readonly Application _app;
         private readonly IViewResolver _viewResolver;
         private readonly IContainerConfiguration _containerConfiguration;
         private ByNameViewModelDiscoveryConvention _convention;
 
-        public NyxApplication(Application app, IViewResolver viewResolver, IContainerConfiguration containerConfiguration)
+        public NyxApplicationConfiguration(Application app, IViewResolver viewResolver, IContainerConfiguration containerConfiguration)
         {
             _app = app;
             _viewResolver = viewResolver;
@@ -32,19 +32,19 @@ namespace Nyx.AppSupport.Wpf
         }
 
 
-        public INyxApplication UsingDefaultConventions()
+        public INyxApplicationConfiguration UsingDefaultConventions()
         {
             _convention = new ByNameViewModelDiscoveryConvention();
             return this;
         }
 
-        public INyxApplication AutoDiscoverViewModels(Assembly assembly)
+        public INyxApplicationConfiguration AutoDiscoverViewModels(Assembly assembly)
         {
             AutoDiscoverViewModelsImpl(assembly);
             return this;
         }
 
-        public INyxApplication AutoDiscoverViewModels()
+        public INyxApplicationConfiguration AutoDiscoverViewModels()
         {
             AutoDiscoverViewModelsImpl(_app.GetType().Assembly);
             return this;

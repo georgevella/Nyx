@@ -30,7 +30,7 @@ namespace Nyx.AppSupport.Wpf
         }
 
         /// <exception cref="InvalidOperationException">Configuration failed</exception>
-        public void Setup(Action<INyxApplication> configAction)
+        public void Setup(Action<INyxApplicationConfiguration> configAction)
         {
             if (configAction == null)
             {
@@ -44,7 +44,7 @@ namespace Nyx.AppSupport.Wpf
                 containerConfiguration.Register<ISaveFileDialogCommand>().UsingConcreteType<SaveFileDialogCommand>();
                 containerConfiguration.Register<IOpenFileDialogCommand>().UsingConcreteType<OpenFileDialogCommand>();
 
-                configAction(new NyxApplication(_app, _viewResolver, containerConfiguration));
+                configAction(new NyxApplicationConfiguration(_app, _viewResolver, containerConfiguration));
 
                 foreach (var pair in _viewResolver)
                 {
