@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using Nyx.AppSupport.Wpf;
+using Nyx.AppSupport.Wpf.AppServices;
 using WpfSampleApplication.ViewModels;
 
 namespace WpfSampleApplication
@@ -24,6 +25,8 @@ namespace WpfSampleApplication
                 c.UsingDefaultConventions().AutoDiscoverViewModels(In.ThisAssembly);
 
                 c.AutoDiscoverCommands(In.ThisAssembly);
+
+                c.Register<IUserNotificationService>().UsingConcreteType<MessageBoxNotificationService>();
             });
 
             bootstrapper.Start<MainViewModel>();

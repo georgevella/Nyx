@@ -46,14 +46,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppBootstrapper.cs" />
-    <Compile Include="AppServices\IApplicationService.cs" />
-    <Compile Include="AppServices\IMessageBoxService.cs" />
-    <Compile Include="AppServices\ISelectFileService.cs" />
-    <Compile Include="AppServices\ISelectFolderService.cs" />
-    <Compile Include="AppServices\MessageBoxService.cs" />
-    <Compile Include="AppServices\SelectFileMode.cs" />
-    <Compile Include="AppServices\SelectFileService.cs" />
-    <Compile Include="AppServices\SelectFolderService.cs" />
     <Compile Include="Behaviours\ButtonBehaviour.cs" />
     <Compile Include="Behaviours\ControlBehaviour.cs" />
     <Compile Include="Behaviours\EventBehaviourFactory.cs" />
@@ -69,8 +61,12 @@
     <Compile Include="Dialogs\Impl\OpenFileDialogCommand.cs" />
     <Compile Include="Bootstrapper\In.cs" />
     <Compile Include="Dialogs\Impl\SaveFileDialogCommand.cs" />
+    <Compile Include="Dialogs\ISelectFolderDialogCommand.cs" />
+    <Compile Include="Dialogs\Impl\SelectFolderDialogCommand.cs" />
     <Compile Include="IApplicationServices.cs" />
     <Compile Include="INyxApplicationConfiguration.cs" />
+    <Compile Include="IUserNotificationService.cs" />
+    <Compile Include="AppServices\MessageBoxNotificationService.cs" />
     <Compile Include="ModalNavigator.cs" />
     <Compile Include="NyxApplicationConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

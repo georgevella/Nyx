@@ -43,6 +43,7 @@ namespace Nyx.AppSupport.Wpf
                 containerConfiguration.Register<INavigator>().UsingConcreteType<DefaultNavigator>();
                 containerConfiguration.Register<ISaveFileDialogCommand>().UsingConcreteType<SaveFileDialogCommand>();
                 containerConfiguration.Register<IOpenFileDialogCommand>().UsingConcreteType<OpenFileDialogCommand>();
+                containerConfiguration.Register<ISelectFolderDialogCommand>().UsingConcreteType<SelectFolderDialogCommand>();
 
                 containerConfiguration.Register<Application>().Using(_app);
                 containerConfiguration.Register<IApplicationServices>().UsingConcreteType<ApplicationServices>();

@@ -1,15 +1,15 @@
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
+using Nyx.AppSupport.Wpf.Dialogs.Impl;
 
-namespace Nyx.AppSupport.Wpf.AppServices
+namespace Nyx.AppSupport.Wpf.Dialogs
 {
-    public class SelectFolderService : ISelectFolderService
+    class SelectFolderDialogCommand : BaseFileDialogCommand, ISelectFolderDialogCommand
     {
-        public bool Execute()
+        protected override DialogResult ExecuteShowDialog(object parameter)
         {
-            var bResult = false;
-            var dialog = new OpenFileDialog();
-            
-            using (dialog)
+            DialogResult dr = DialogResult.None;
+
+            using (var dialog = new OpenFileDialog())
             {
                 dialog.CheckFileExists = false;
                 dialog.CheckPathExists = true;
@@ -18,26 +18,16 @@ namespace Nyx.AppSupport.Wpf.AppServices
                 dialog.FileName = "[Folder]";
                 dialog.Filter = "Folders only|*.FOLDER";
 
-                switch (dialog.ShowDialog())
+
+                switch (dr = dialog.ShowDialog())
                 {
                     case DialogResult.OK:
-                        bResult = true;
                         Path = System.IO.Path.GetDirectoryName(dialog.FileName);
                         break;
                 }
             }
 
-            return bResult;
-        }
-
-        public string Path
-        {
-            get; set;
-        }
-
-        public string Title
-        {
-            get; set;
+            return dr;
         }
     }
 }
