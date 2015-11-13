@@ -18,7 +18,7 @@ namespace Nyx.Composition.Tests
 
             IStub obj = null;
 
-            using (var lifecycle = pyxis.BeginLifecycle())
+            using (var lifecycle = pyxis.UsingLifetimeService())
             {
                 obj = pyxis.Get<IStub>(lifecycle);
             }

@@ -6,6 +6,6 @@ namespace Nyx.Composition
     /// </summary>
     internal interface IInstanceBuilder
     {
-        void Build(ServiceInstantiationGraph instantiationGraph, object instance);
+        void Build(ServiceInstantiationGraph instantiationGraph, object instance, AbstractLifeTime lifetime);
     }
 }

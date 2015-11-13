@@ -5,7 +5,7 @@ namespace Nyx.Composition
     /// <summary>
     /// Contract for the Pyxis container
     /// </summary>
-    public interface IContainer
+    public interface IContainer : IDisposable
     {
         /// <summary>
         /// Creates an instance of service type <typeparamref name="TService"/>
@@ -17,14 +17,14 @@ namespace Nyx.Composition
         /// <summary>
         /// </summary>
         /// <returns></returns>
-        ILifecycle BeginLifecycle();
+        ILifetime UsingLifetimeService();
 
         /// <summary>
         /// </summary>
-        /// <param name="lifecycle"></param>
+        /// <param name="lifetime"></param>
         /// <typeparam name="TService"></typeparam>
         /// <returns></returns>
-        TService Get<TService>(ILifecycle lifecycle);
+        TService Get<TService>(ILifetime lifetime);
 
         /// <summary>
         /// Creates a named instance of service type <typeparamref name="TService"/> 
@@ -36,13 +36,13 @@ namespace Nyx.Composition
 
         /// <summary>
         /// Creates a named instance of service type <typeparamref name="TService"/> and 
-        /// attaches the instance to the supplied lifecycle
+        /// attaches the instance to the supplied Lifetime
         /// </summary>
         /// <param name="name">Name of service type to retrieve</param>
         /// <typeparam name="TService">Service type to retrieve</typeparam>
-        /// <param name="lifecycle">Lifecycle instance to which the service intance will be attached to</param>		
+        /// <param name="lifetime">Lifetime instance to which the service intance will be attached to</param>		
         /// <returns></returns>
-        TService Get<TService>(string name, ILifecycle lifecycle);
+        TService Get<TService>(string name, ILifetime lifetime);
 
 
         object Get(Type serviceType);
@@ -51,10 +51,10 @@ namespace Nyx.Composition
         /// <summary>
         /// </summary>
         /// <param name="serviceType"></param>
-        /// <param name="lifecycle"></param>
+        /// <param name="lifetime"></param>
         /// <typeparam name="TService"></typeparam>
         /// <returns></returns>
-        object Get(Type serviceType, ILifecycle lifecycle);
+        object Get(Type serviceType, ILifetime lifetime);
 
         /// <summary>
         /// Creates a named instance of service type <typeparamref name="TService"/> 
@@ -67,20 +67,20 @@ namespace Nyx.Composition
 
         /// <summary>
         /// Creates a named instance of service type <typeparamref name="TService"/> and 
-        /// attaches the instance to the supplied lifecycle
+        /// attaches the instance to the supplied Lifetime
         /// </summary>
         /// <param name="serviceType"></param>
         /// <param name="name">Name of service type to retrieve</param>
         /// <typeparam name="TService">Service type to retrieve</typeparam>
-        /// <param name="lifecycle">Lifecycle instance to which the service intance will be attached to</param>		
+        /// <param name="lifetime">Lifetime instance to which the service intance will be attached to</param>		
         /// <returns></returns>
-        object Get(Type serviceType, string name, ILifecycle lifecycle);
+        object Get(Type serviceType, string name, ILifetime lifetime);
     }
 
     /// <summary>
-    /// Service lifecycle contract
+    /// Service Lifetime contract
     /// </summary>
-    public interface ILifecycle : IDisposable
+    public interface ILifetime : IDisposable
     {
 
     }

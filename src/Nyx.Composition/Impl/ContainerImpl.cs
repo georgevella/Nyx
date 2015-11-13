@@ -11,6 +11,7 @@ namespace Nyx.Composition.Impl
         private readonly Dictionary<ServiceKey, IInternalServiceRegistration> _registrations = new Dictionary<ServiceKey, IInternalServiceRegistration>();
         private readonly Dictionary<ServiceKey, IServiceFactory> _factories = new Dictionary<ServiceKey, IServiceFactory>();
         private readonly Dictionary<ServiceKey, IInstanceBuilder> _instanceBuilders = new Dictionary<ServiceKey, IInstanceBuilder>();
+        private readonly AbstractLifeTime _defaultLifeTime = new DisposeAtEndOfLife();
 
         /// <summary>
         /// Creates a new instance of <see cref="FluentContainerConfigurator"/>
@@ -24,60 +25,44 @@ namespace Nyx.Composition.Impl
 
         public TService Get<TService>()
         {
-            var type = typeof(TService);
-            var context = new ServiceInstantiationGraph(this);
-            return (TService)Get(context, type);
+            return (TService)ResolveAndBuildService(typeof(TService), _defaultLifeTime);
         }
 
-        public ILifecycle BeginLifecycle() => new Lifecycle();
+        public ILifetime UsingLifetimeService() => new DisposeAtEndOfLife();
 
-        public TService Get<TService>(ILifecycle lifecycle)
+        public TService Get<TService>(ILifetime lifetime)
         {
-            var lifeCycleInstance = (Lifecycle)lifecycle;
-
-            var obj = Get<TService>();
-            lifeCycleInstance.Register(obj);
-
-            return obj;
+            return (TService)ResolveAndBuildService(typeof(TService), (AbstractLifeTime)lifetime);
         }
 
         public TService Get<TService>(string name)
         {
-            var type = typeof(TService);
-            var context = new ServiceInstantiationGraph(this);
-            return (TService)Get(context, type, name);
+            return (TService)ResolveAndBuildService(typeof(TService), _defaultLifeTime, name: name);
         }
 
-        public TService Get<TService>(string name, ILifecycle lifecycle)
+        public TService Get<TService>(string name, ILifetime lifetime)
         {
-            throw new NotImplementedException();
+            return (TService)ResolveAndBuildService(typeof(TService), (AbstractLifeTime)lifetime, name: name);
         }
 
         public object Get(Type serviceType)
         {
-            var context = new ServiceInstantiationGraph(this);
-            return Get(context, serviceType);
+            return ResolveAndBuildService(serviceType, _defaultLifeTime);
         }
 
-        public object Get(Type serviceType, ILifecycle lifecycle)
+        public object Get(Type serviceType, ILifetime lifetime)
         {
-            var lifeCycleInstance = (Lifecycle)lifecycle;
-
-            var obj = Get(serviceType);
-            lifeCycleInstance.Register(obj);
-
-            return obj;
+            return ResolveAndBuildService(serviceType, (AbstractLifeTime)lifetime);
         }
 
         public object Get(Type serviceType, string name)
         {
-            var context = new ServiceInstantiationGraph(this);
-            return Get(context, serviceType, name);
+            return ResolveAndBuildService(serviceType, _defaultLifeTime, name: name);
         }
 
-        public object Get(Type serviceType, string name, ILifecycle lifecycle)
+        public object Get(Type serviceType, string name, ILifetime lifetime)
         {
-            throw new NotImplementedException();
+            return ResolveAndBuildService(serviceType, (AbstractLifeTime)lifetime, name: name);
         }
 
         /// <summary>
@@ -98,12 +83,13 @@ namespace Nyx.Composition.Impl
         /// <summary>
         /// Creates an instance of the service type specified in <paramref name="contractType"/>
         /// </summary>
-        /// <param name="instantiationGraph">Instanciation instanciationGraph</param>
         /// <param name="contractType">Service to instanciate</param>
+        /// <param name="lifetime"></param>
+        /// <param name="instantiationGraph">Instanciation instanciationGraph</param>
         /// <param name="name"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"><paramref name="contractType"/> and/or <paramref name="instantiationGraph"/> is <see langword="null" />.</exception>
-        internal object Get(ServiceInstantiationGraph instantiationGraph, Type contractType, string name = null)
+        internal object ResolveAndBuildService(Type contractType, AbstractLifeTime lifetime, ServiceInstantiationGraph instantiationGraph = null, string name = null)
         {
             if (contractType == null)
             {
@@ -111,7 +97,7 @@ namespace Nyx.Composition.Impl
             }
             if (instantiationGraph == null)
             {
-                throw new ArgumentNullException(nameof(instantiationGraph));
+                instantiationGraph = new ServiceInstantiationGraph(this);
             }
             var key = new ServiceKey(contractType, name);
             var reg = _registrations[key];
@@ -124,15 +110,19 @@ namespace Nyx.Composition.Impl
                     return instantiationGraph.Instances[key];
             }
 
-            var instance = factory.Create(instantiationGraph);
+            var instance = factory.Create(instantiationGraph, lifetime);
 
             // if registration does not support instance building (it's a singleton / set up with Using(instance) method
             // an instancebuilder won't be present
             if (_instanceBuilders.ContainsKey(key))
             {
                 var builder = _instanceBuilders[key];
-                builder.Build(instantiationGraph, instance);
+                builder.Build(instantiationGraph, instance, lifetime);
             }
+
+            // we never add the container to the lifetime instance
+            if (!(instance is IContainer))
+                lifetime.Register(instance);
 
             return instance;
         }
@@ -140,7 +130,12 @@ namespace Nyx.Composition.Impl
         object IServiceProvider.GetService(Type type)
         {
             var context = new ServiceInstantiationGraph(this);
-            return Get(context, type);
+            return ResolveAndBuildService(type, _defaultLifeTime, context);
+        }
+
+        public void Dispose()
+        {
+            _defaultLifeTime.Dispose();
         }
     }
 }

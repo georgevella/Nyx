@@ -22,7 +22,7 @@ namespace Nyx.Composition.ServiceFactories
 
         }
 
-        public object Create(ServiceInstantiationGraph instantiationGraph)
+        public object Create(ServiceInstantiationGraph instantiationGraph, AbstractLifeTime lifetime)
         {
             return _constructorFunc();
         }

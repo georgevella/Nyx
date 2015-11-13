@@ -54,11 +54,12 @@ namespace Nyx.Composition.Impl
         /// </summary>
         /// <param name="instantiationGraph"></param>
         /// <param name="instance"></param>
+        /// <param name="lifetime"></param>
         /// <exception cref="InvalidOperationException">
         /// <paramref name="instance"/> is an invalid type</exception>
         /// <exception cref="ArgumentNullException"><paramref name="instantiationGraph"/>
         /// and/or <paramref name="instance"/> is <see langword="null" />.</exception>
-        public void Build(ServiceInstantiationGraph instantiationGraph, object instance)
+        public void Build(ServiceInstantiationGraph instantiationGraph, object instance, AbstractLifeTime lifetime)
         {
             if (instantiationGraph == null)
             {
@@ -80,7 +81,7 @@ namespace Nyx.Composition.Impl
                 if (!instantiationGraph.IsTypeSupported(propSetter.Item1))
                     continue;
 
-                var propValue = instantiationGraph.Get(propSetter.Item1);
+                var propValue = instantiationGraph.Get(propSetter.Item1, lifetime);
                 propSetter.Item2(convertedInstance, propValue);
             }
         }

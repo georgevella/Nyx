@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace Nyx.Composition.Impl
 {
-    internal class Lifecycle : ILifecycle
+    internal class DisposeAtEndOfLife : AbstractLifeTime
     {
         private readonly List<IDisposable> _disposables = new List<IDisposable>();
-        public void Dispose()
+        public override void Dispose()
         {
             foreach (var item in _disposables)
             {
@@ -16,7 +16,7 @@ namespace Nyx.Composition.Impl
             _disposables.Clear();
         }
 
-        public void Register(object instance)
+        public override void Register(object instance)
         {
             var disposable = instance as IDisposable;
             if (disposable != null)

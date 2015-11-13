@@ -75,13 +75,13 @@ namespace Nyx.Composition.ServiceFactories
             _constructor = ctorExpression.Compile();
         }
 
-        public object Create(ServiceInstantiationGraph instantiationGraph)
+        public object Create(ServiceInstantiationGraph instantiationGraph, AbstractLifeTime lifetime)
         {
             var args = new object[_parameterTypes.Count];
             var argsIndex = 0;
             foreach (var paramType in _parameterTypes)
             {
-                args[argsIndex++] = instantiationGraph.Get(paramType);
+                args[argsIndex++] = instantiationGraph.Get(paramType, lifetime);
             }
 
             return _constructor(args);

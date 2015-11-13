@@ -16,11 +16,14 @@ namespace WpfSampleApplication
     /// </summary>
     public partial class App : Application
     {
+        private AppBootstrapper _bootstrapper;
+
         protected override void OnStartup(StartupEventArgs e)
         {
-            var bootstrapper = new AppBootstrapper(this);
 
-            bootstrapper.Setup(c =>
+            _bootstrapper = new AppBootstrapper(this);
+
+            _bootstrapper.Setup(c =>
             {
                 c.UsingDefaultConventions().AutoDiscoverViewModels(In.ThisAssembly);
 
@@ -29,7 +32,14 @@ namespace WpfSampleApplication
                 c.Register<IUserNotificationService>().UsingConcreteType<MessageBoxNotificationService>();
             });
 
-            bootstrapper.Start<MainViewModel>();
+            _bootstrapper.Start<MainViewModel>();
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            _bootstrapper.Dispose();
+
+            base.OnExit(e);
         }
     }
 }

@@ -10,7 +10,7 @@ using Nyx.Presentation;
 
 namespace Nyx.AppSupport.Wpf
 {
-    public class AppBootstrapper
+    public class AppBootstrapper : IDisposable
     {
         private readonly Application _app;
         private readonly ViewResolver _viewResolver;
@@ -62,5 +62,9 @@ namespace Nyx.AppSupport.Wpf
         }
 
 
+        public void Dispose()
+        {
+            _container.Dispose();
+        }
     }
 }
