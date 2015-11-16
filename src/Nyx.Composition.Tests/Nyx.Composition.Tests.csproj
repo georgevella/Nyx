@@ -80,7 +80,7 @@
     <Compile Include="LifecycleSupportTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PyxisKeyTests.cs" />
-    <Compile Include="ServiceResolutionTests.cs" />
+    <Compile Include="ContainerTests.cs" />
     <Compile Include="Stubs\AnotherDependency.cs" />
     <Compile Include="Stubs\AnotherDependencyDependingOnStubDependency.cs" />
     <Compile Include="Stubs\DisposableStub.cs" />

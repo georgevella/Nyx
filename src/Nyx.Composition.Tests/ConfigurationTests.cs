@@ -39,12 +39,6 @@ namespace Nyx.Composition.Tests
         }
 
         [Fact]
-        public void CircularDependenciesOnServicesShouldFailRegistration()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Fact]
         public void RegistrationShouldNotFailOnRegistrationButAfterContainerBeginsInitialization()
         {
             var cfg = new FluentContainerConfigurator();

@@ -6,6 +6,7 @@ using Xunit;
 
 namespace Nyx.Composition.Tests
 {
+    // ReSharper disable once TestFileNameWarning
     public class LifecycleSupportTests
     {
 

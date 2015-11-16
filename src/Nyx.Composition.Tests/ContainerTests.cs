@@ -6,19 +6,35 @@ using Xunit;
 
 namespace Nyx.Composition.Tests
 {
-    public class ServiceResolutionTests
+    public class ContainerTests
     {
         [Fact]
-        public void RequestedServiceShouldReturnInstanceOfConfiguredConcreteType()
+        public void ContainerShouldResolveServiceToAConcreteType_Method1()
         {
-            var pyxis = ContainerFactory.Setup(c =>
+            var container = ContainerFactory.Setup(c =>
             {
                 c.Register<IStub>().UsingConcreteType<Stub>();
             });
 
-            var testobject = pyxis.Get<IStub>();
+            var testobject = container.Get<IStub>();
 
             testobject.Should().BeOfType<Stub>();
+        }
+
+        [Fact]
+        //public void ContainerShouldAllowRegistrationOfSingletonTypesUsingProvidedInstance()
+        public void ContainerShouldResolveServiceToAConcreteType_Method2()
+        {
+            var container = ContainerFactory.Setup(c =>
+            {
+                c.Register(typeof(IStub)).UsingConcreteType(typeof(Stub));
+            });
+
+            IStub stub = null;
+
+            Action a = () => stub = container.Get<IStub>();
+            a.ShouldNotThrow();
+            stub.Should().NotBeNull().And.BeOfType<Stub>();
         }
 
         [Fact]
@@ -158,22 +174,6 @@ namespace Nyx.Composition.Tests
             stub.Should().BeOfType<AnotherStub>();
             stub = pyxis.Get<IStub>("stub2");
             stub.Should().BeOfType<DisposableStub>();
-        }
-
-        [Fact]
-        public void ContainerShouldAllowRegistrationOfSingletonTypesUsingProvidedInstance()
-        {
-            var pyxis = ContainerFactory.Setup(c =>
-            {
-                c.Register(typeof(IStub)).UsingConcreteType(typeof(Stub));
-            });
-
-            IStub stub = null;
-
-            Action a = () => stub = pyxis.Get<IStub>();
-
-            a.ShouldNotThrow();
-            stub.Should().NotBeNull().And.BeOfType<Stub>();
         }
 
         [Fact]
