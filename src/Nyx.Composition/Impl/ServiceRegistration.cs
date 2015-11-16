@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Nyx.Composition.ServiceFactories;
@@ -11,19 +12,35 @@ namespace Nyx.Composition.Impl
     internal class ServiceRegistration<TService> : IServiceRegistration<TService>, IInternalServiceRegistration, IServiceRegistration, IEquatable<ServiceRegistration<TService>>
     {
         private readonly FluentContainerConfigurator _parentConfiguration;
-        private Type _targetType;
         private string _name;
         private TService _staticInstance;
-        private readonly Type _contractType;
         public bool IsTransient { get; private set; }
 
-        public Type TargetType => _targetType;
+        public bool IsSingleton { get; private set; }
 
-        public Type ContractType => _contractType;
+        public Type InstanceType { get; private set; }
+
+        public Type ContractType { get; }
 
         public string Name => _name;
 
-        public bool SupportsInstanceBuilder => _targetType != null;
+        public bool SupportsInstanceBuilder => InstanceType != null;
+
+
+        private void UsingConcreteTypeImpl(Type type)
+        {
+            _staticInstance = default(TService);
+            InstanceType = type;
+            IsSingleton = false;
+        }
+
+        private void UsingStaticInstanceImpl(TService serviceInstance)
+        {
+            _staticInstance = serviceInstance;
+            InstanceType = null;
+            IsSingleton = true;
+        }
+
 
         public bool Equals(ServiceRegistration<TService> other)
         {
@@ -35,7 +52,7 @@ namespace Nyx.Composition.Impl
             {
                 return true;
             }
-            return _targetType == other.TargetType && _contractType == other.ContractType && string.Equals(Name, other.Name);
+            return InstanceType == other.InstanceType && ContractType == other.ContractType && string.Equals(Name, other.Name);
         }
 
         public override bool Equals(object obj)
@@ -56,8 +73,8 @@ namespace Nyx.Composition.Impl
         {
             unchecked
             {
-                var hashCode = _targetType?.GetHashCode() ?? 0;
-                hashCode = (hashCode * 397) ^ (_contractType?.GetHashCode() ?? 0);
+                var hashCode = InstanceType?.GetHashCode() ?? 0;
+                hashCode = (hashCode * 397) ^ (ContractType?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ (Name?.GetHashCode() ?? 0);
                 return hashCode;
             }
@@ -66,18 +83,17 @@ namespace Nyx.Composition.Impl
         public ServiceRegistration(FluentContainerConfigurator parentConfiguration)
         {
             _parentConfiguration = parentConfiguration;
-            _contractType = typeof(TService);
+            ContractType = typeof(TService);
 
             if (!ContractType.GetTypeInfo().IsInterface)
             {
-                _targetType = _contractType;
+                InstanceType = ContractType;
             }
         }
 
         public IServiceRegistration<TService> UsingConcreteType(Type type)
         {
-            _targetType = type;
-            _staticInstance = default(TService);
+            UsingConcreteTypeImpl(type);
             return this;
         }
 
@@ -102,7 +118,7 @@ namespace Nyx.Composition.Impl
             if (!(serviceInstance is TService))
                 throw new InvalidOperationException("Invalid instance type");
 
-            Using((TService)serviceInstance);
+            UsingStaticInstanceImpl((TService)serviceInstance);
             return this;
         }
 
@@ -111,19 +127,15 @@ namespace Nyx.Composition.Impl
             if (serviceInstance == null)
                 throw new ArgumentNullException(nameof(serviceInstance));
 
-            _staticInstance = (TService)serviceInstance;
-            _targetType = null;
+            UsingStaticInstanceImpl(serviceInstance);
             return this;
         }
-
 
 
         IServiceRegistration IServiceRegistration.Named(string name)
         {
             return (IServiceRegistration)Named(name);
         }
-
-
 
         public IServiceRegistration<TService> Named(string name)
         {
@@ -133,13 +145,15 @@ namespace Nyx.Composition.Impl
 
         public IServiceRegistration<TService> AsSingleton()
         {
-            throw new NotImplementedException();
+            IsSingleton = true;
+            IsTransient = false;
+            return this;
         }
 
         public IServiceRegistration<TService> AsTransient()
         {
             IsTransient = true;
-
+            IsSingleton = false;
             return this;
         }
 
@@ -150,7 +164,7 @@ namespace Nyx.Composition.Impl
 
         public IInstanceBuilder GetInstanceBuilder()
         {
-            var instanceBuilderType = typeof(InstanceBuilder<>).MakeGenericType(_targetType);
+            var instanceBuilderType = typeof(InstanceBuilder<>).MakeGenericType(InstanceType);
             var instanceBuilder = (IInstanceBuilder)Activator.CreateInstance(instanceBuilderType);
 
             return instanceBuilder;
@@ -158,10 +172,23 @@ namespace Nyx.Composition.Impl
 
         public IServiceFactory GetObjectFactory()
         {
-            if (_staticInstance != null)
-                return new StaticServiceFactory(_staticInstance);
+            if (!IsSingleton)
+            {
+                return InternalServiceFactoryFactory();
+            }
 
-            var typeInfo = _targetType.GetTypeInfo();
+            if (_staticInstance != null)
+            {
+                return new StaticServiceFactory(_staticInstance);
+            }
+
+            var factory = InternalServiceFactoryFactory();
+            return new SingletonServiceFactory(factory);
+        }
+
+        private IServiceFactory InternalServiceFactoryFactory()
+        {
+            var typeInfo = InstanceType.GetTypeInfo();
             var constructors = typeInfo.DeclaredConstructors.ToList();
 
             if (constructors.Count == 1)
@@ -170,14 +197,25 @@ namespace Nyx.Composition.Impl
                 var parameters = constructor.GetParameters();
                 if (parameters.Length == 0)
                 {
-                    return new SimpleServiceFactory(_contractType, constructor);
+                    return new SimpleServiceFactory(ContractType, constructor);
                 }
                 return new ConstructorInjectionServiceFactory(constructor, _parentConfiguration);
             }
 
             // find the most suitable constructor to use (the one which we can support the most with the current registrations)
+            var ctor = DetermineBestConstructor(constructors);
+            if (ctor == null)
+            {
+                throw new InvalidOperationException("Unable to find suitable constructor for [" + InstanceType + "]");
+            }
+
+            return new ConstructorInjectionServiceFactory(ctor, _parentConfiguration);
+        }
+
+        private ConstructorInfo DetermineBestConstructor(List<ConstructorInfo> constructors)
+        {
             var items = constructors.Select(c => new Tuple<ConstructorInfo, ParameterInfo[]>(c, c.GetParameters()))
-                    .ToList();
+                .ToList();
 
             items.Sort((x, y) => y.Item2.Length - x.Item2.Length);
 
@@ -188,7 +226,7 @@ namespace Nyx.Composition.Impl
                 foreach (var parameter in ctorMetadata.Item2)
                 {
                     if (_parentConfiguration.Registrations.All(v => v.ContractType != parameter.ParameterType) &&
-                            !parameter.IsOptional)
+                        !parameter.IsOptional)
                     {
                         allParametersResolvable = false;
                         break;
@@ -196,12 +234,14 @@ namespace Nyx.Composition.Impl
                 }
 
                 if (!allParametersResolvable)
+                {
                     continue;
+                }
 
-                return new ConstructorInjectionServiceFactory(ctorMetadata.Item1, _parentConfiguration);
+                return ctorMetadata.Item1;
             }
 
-            throw new InvalidOperationException();
+            return null;
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using FluentAssertions;
 using Nyx.Composition.Tests.Stubs;
 using Xunit;
@@ -31,15 +32,15 @@ namespace Nyx.Composition.Tests
         [Fact]
         public void ServicesMarkedAsSingletonShouldBeReused()
         {
-            var pyxis = ContainerFactory.Setup(c =>
+            var container = ContainerFactory.Setup(c =>
             {
                 c.Register<IStub>().UsingConcreteType<DisposableStub>().AsSingleton();
+
+                c.Register<Stub2>().AsSingleton();
             });
 
-            var a = pyxis.Get<IStub>();
-            var b = pyxis.Get<IStub>();
-
-            a.Should().BeSameAs(b);
+            container.Get<IStub>().Should().BeSameAs(container.Get<IStub>());
+            container.Get<Stub2>().Should().BeSameAs(container.Get(typeof(Stub2)));
         }
 
 

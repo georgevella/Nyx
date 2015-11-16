@@ -18,10 +18,11 @@ namespace Nyx.Composition
         /// <summary>
         /// .NET Type that will be constructed when <see cref="ContractType"/> is requested
         /// </summary>
-        Type TargetType { get; }
+        Type InstanceType { get; }
 
         bool SupportsInstanceBuilder { get; }
         bool IsTransient { get; }
+        bool IsSingleton { get; }
 
         /// <summary>
         /// Returns an instance builder instance that can be used to populate properties in a constructed contract
@@ -31,7 +32,7 @@ namespace Nyx.Composition
 
         /// <summary>
         /// Returns a factory instance that is used to create services of the
-        /// type <see cref="IInternalServiceRegistration.TargetType" />
+        /// type <see cref="InstanceType" />
         /// </summary>
         /// <returns>
         /// An instance of either <c>SimpleServiceFactory</c> or <c>ConstructorInjectionServiceFactory</c>
