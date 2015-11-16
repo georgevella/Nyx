@@ -10,8 +10,9 @@ namespace Nyx.Composition.ServiceFactories
     /// <summary>
     /// Uses constructor injection to create an instance of a service
     /// </summary>
-    internal class ConstructorInjectionServiceFactory : IServiceFactory
+    internal class ConstructorInjectionServiceFactory<TService> : IServiceFactory
     {
+        private readonly Action<TService> _initializerMethod;
         private readonly List<Type> _parameterTypes = new List<Type>();
 
         private readonly Func<object[], object> _constructor;
@@ -21,11 +22,13 @@ namespace Nyx.Composition.ServiceFactories
         /// </summary>
         /// <param name="constructor">Constructor to use to create service</param>
         /// <param name="configuration">Container configuration</param>
+        /// <param name="initializerMethod"></param>
         /// <exception cref="InvalidOperationException">If constructor defines an
         /// output parameter, or a non optional parameter is not supported by the
         /// current container configuration</exception>
-        public ConstructorInjectionServiceFactory(ConstructorInfo constructor, FluentContainerConfigurator configuration)
+        public ConstructorInjectionServiceFactory(ConstructorInfo constructor, FluentContainerConfigurator configuration, Action<TService> initializerMethod = null)
         {
+            _initializerMethod = initializerMethod;
 
             var argsParam = Expression.Parameter(typeof(object[]), "args");
             var ctorArgs = new List<Expression>();
@@ -84,7 +87,13 @@ namespace Nyx.Composition.ServiceFactories
                 args[argsIndex++] = instantiationGraph.Get(paramType, lifetime);
             }
 
-            return _constructor(args);
+            var obj = _constructor(args);
+
+            if (_initializerMethod != null)
+                _initializerMethod((TService)obj);
+
+
+            return obj;
         }
     }
 }

@@ -14,6 +14,8 @@ namespace Nyx.Composition.Impl
         private readonly FluentContainerConfigurator _parentConfiguration;
         private string _name;
         private TService _staticInstance;
+
+        private Action<TService> _initializerMethod;
         public bool IsTransient { get; private set; }
 
         public bool IsSingleton { get; private set; }
@@ -159,7 +161,8 @@ namespace Nyx.Composition.Impl
 
         public IServiceRegistration<TService> InitializeWith(Action<TService> initializerMethod)
         {
-            throw new NotImplementedException();
+            _initializerMethod = initializerMethod;
+            return this;
         }
 
         public IInstanceBuilder GetInstanceBuilder()
@@ -197,9 +200,9 @@ namespace Nyx.Composition.Impl
                 var parameters = constructor.GetParameters();
                 if (parameters.Length == 0)
                 {
-                    return new SimpleServiceFactory(ContractType, constructor);
+                    return new SimpleServiceFactory<TService>(ContractType, constructor, _initializerMethod);
                 }
-                return new ConstructorInjectionServiceFactory(constructor, _parentConfiguration);
+                return new ConstructorInjectionServiceFactory<TService>(constructor, _parentConfiguration, _initializerMethod);
             }
 
             // find the most suitable constructor to use (the one which we can support the most with the current registrations)
@@ -209,7 +212,7 @@ namespace Nyx.Composition.Impl
                 throw new InvalidOperationException("Unable to find suitable constructor for [" + InstanceType + "]");
             }
 
-            return new ConstructorInjectionServiceFactory(ctor, _parentConfiguration);
+            return new ConstructorInjectionServiceFactory<TService>(ctor, _parentConfiguration, _initializerMethod);
         }
 
         private ConstructorInfo DetermineBestConstructor(List<ConstructorInfo> constructors)

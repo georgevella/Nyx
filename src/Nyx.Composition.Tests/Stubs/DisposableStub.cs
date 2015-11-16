@@ -13,7 +13,15 @@ namespace Nyx.Composition.Tests.Stubs
 
         public void Initializer()
         {
-            throw new NotImplementedException();
+            InitializerCalled = true;
         }
+
+        public DisposableStub()
+        {
+            InitializerCalled = false;
+            Disposed = false;
+        }
+
+        public bool InitializerCalled { get; set; }
     }
 }

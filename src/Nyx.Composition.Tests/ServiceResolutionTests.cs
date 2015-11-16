@@ -139,7 +139,10 @@ namespace Nyx.Composition.Tests
                 c.Register<IStub>().UsingConcreteType<DisposableStub>().InitializeWith(x => x.Initializer());
             });
 
-            throw new NotImplementedException();
+            var stub = pyxis.Get<IStub>();
+
+            stub.Should().NotBeNull().And.BeOfType<DisposableStub>();
+            stub.As<DisposableStub>().InitializerCalled.Should().BeTrue();
         }
 
         [Fact]
