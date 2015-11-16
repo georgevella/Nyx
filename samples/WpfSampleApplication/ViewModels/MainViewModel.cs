@@ -10,6 +10,7 @@ namespace WpfSampleApplication.ViewModels
     public class MainViewModel : ViewModel<MainViewModel>
     {
         private readonly ISystemTrayService _systemTray;
+        private readonly INavigator _navigator;
         public NotifyOnSystemTrayCommand SystemTrayNotificationCommand { get; }
         public ExitAppCommand ExitAppCommand { get; }
         public IOpenFileDialogCommand OpenFileCommand { get; }
@@ -19,9 +20,10 @@ namespace WpfSampleApplication.ViewModels
             ISaveFileDialogCommand saveFileDialogCommand,
             IOpenFileDialogCommand openFileDialogCommand,
             ExitAppCommand exitApp,
-            NotifyOnSystemTrayCommand systemTrayNotificationCommand)
+            NotifyOnSystemTrayCommand systemTrayNotificationCommand, INavigator navigator)
         {
             _systemTray = systemTray;
+            _navigator = navigator;
             SystemTrayNotificationCommand = systemTrayNotificationCommand;
             ExitAppCommand = exitApp;
             OpenFileCommand = openFileDialogCommand;
@@ -29,7 +31,11 @@ namespace WpfSampleApplication.ViewModels
 
             ShowSystemTrayIconCommand = new DelegateCommand(() => _systemTray.Show());
             HideSystemTrayIconCommand = new DelegateCommand(() => _systemTray.Hide());
+
+            ShowDialogCommand = new DelegateCommand(() => _navigator.NavigateTo<DialogViewModel>());
         }
+
+        public DelegateCommand ShowDialogCommand { get; }
 
         public ICommand HideSystemTrayIconCommand { get; }
 

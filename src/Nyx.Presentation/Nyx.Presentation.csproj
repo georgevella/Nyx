@@ -38,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractNotifyPropertyChanged.cs" />
+    <Compile Include="Attributes\DialogAttribute.cs" />
     <Compile Include="Conventions\ByNameDiscoveryConvention.cs" />
     <Compile Include="INavigator.cs" />
     <Compile Include="IDiscoveryConvention.cs" />

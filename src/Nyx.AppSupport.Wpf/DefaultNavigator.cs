@@ -1,6 +1,8 @@
-﻿using System.Windows;
+﻿using System.Reflection;
+using System.Windows;
 using Nyx.Composition;
 using Nyx.Presentation;
+using Nyx.Presentation.Attributes;
 
 namespace Nyx.AppSupport
 {
@@ -22,14 +24,26 @@ namespace Nyx.AppSupport
             var view = (FrameworkElement)_container.Get(viewType);
             var viewModel = _container.Get<TViewModel>();
 
+            var showModal = typeof(TViewModel).GetCustomAttribute<DialogAttribute>() != null;
+
             view.DataContext = viewModel;
 
             var windowView = view as Window;
-            if (windowView != null)
+            if (windowView == null)
             {
-                var mainWindow = Application.Current.MainWindow;
-                if (mainWindow != null && !Equals(mainWindow, windowView))
-                    windowView.Owner = mainWindow;
+                return viewModel;
+            }
+
+            var mainWindow = Application.Current.MainWindow;
+            if (mainWindow != null && !Equals(mainWindow, windowView))
+                windowView.Owner = mainWindow;
+
+            if (showModal)
+            {
+                windowView.ShowDialog();
+            }
+            else
+            {
                 windowView.Show();
             }
 

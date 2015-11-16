@@ -80,6 +80,14 @@
                     </Button>
                 </Grid>
             </TabItem>
+            <TabItem Header="Windows" HorizontalAlignment="Left" Height="22" VerticalAlignment="Top" Width="55">
+                <Grid Background="#FFE5E5E5">
+                    <Button x:Name="button" Content="Show Dialog VM" HorizontalAlignment="Left" Margin="10,10,0,0" 
+                            VerticalAlignment="Top" Width="135"
+                            Command="{Binding Path=ShowDialogCommand}" Height="31"
+                            />
+                </Grid>
+            </TabItem>
         </TabControl>
         <Button Content="Exit" Margin="0,0,10,10" Grid.Row="1"
                 Command="{Binding Path=ExitAppCommand}" HorizontalAlignment="Right" Width="82" Height="30" VerticalAlignment="Bottom"
