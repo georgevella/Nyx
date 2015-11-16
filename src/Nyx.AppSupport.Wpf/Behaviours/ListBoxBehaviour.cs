@@ -1,4 +1,4 @@
-﻿namespace Nyx.AppSupport.Wpf.Behaviours
+﻿namespace Nyx.AppSupport.Behaviours
 {
     public class ListBoxBehaviour
     {

@@ -5,8 +5,8 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using Nyx.AppSupport.Wpf;
-using Nyx.AppSupport.Wpf.AppServices;
+using Nyx.AppSupport;
+using Nyx.AppSupport.AppServices;
 using WpfSampleApplication.ViewModels;
 
 namespace WpfSampleApplication
@@ -21,6 +21,9 @@ namespace WpfSampleApplication
         protected override void OnStartup(StartupEventArgs e)
         {
 
+            var aboutMessageId = Guid.NewGuid();
+            var exitMessageId = Guid.NewGuid();
+
             _bootstrapper = new AppBootstrapper(this);
 
             _bootstrapper.Setup(c =>
@@ -29,7 +32,17 @@ namespace WpfSampleApplication
 
                 c.AutoDiscoverCommands(In.ThisAssembly);
 
-                c.Register<IUserNotificationService>().UsingConcreteType<MessageBoxNotificationService>();
+                c.UsesSystemTray(s =>
+                {
+                    s.UsingIcon(new Uri("pack://application:,,,/Assets/Coherence.ico"))
+                        .Menu(x =>
+                        {
+                            x.MenuItem("About", aboutMessageId)
+                                .Seperator()
+                                .MenuItem("Exit", exitMessageId);
+                        });
+                });
+                c.UsesNotificationServices<MessageBoxNotificationService>();
             });
 
             _bootstrapper.Start<MainViewModel>();

@@ -7,7 +7,7 @@
     <ProjectGuid>{301F8A6C-D18A-4F62-B30E-F9F2488C74E4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Nyx.AppSupport.Wpf</RootNamespace>
+    <RootNamespace>Nyx.AppSupport</RootNamespace>
     <AssemblyName>Nyx.AppSupport.Wpf</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -34,6 +34,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
@@ -65,12 +66,16 @@
     <Compile Include="Dialogs\Impl\SelectFolderDialogCommand.cs" />
     <Compile Include="IApplicationServices.cs" />
     <Compile Include="INyxApplicationConfiguration.cs" />
+    <Compile Include="SystemTray\ISystemTrayMenuConfigurator.cs" />
+    <Compile Include="SystemTray\ISystemTrayService.cs" />
     <Compile Include="IUserNotificationService.cs" />
     <Compile Include="AppServices\MessageBoxNotificationService.cs" />
     <Compile Include="ModalNavigator.cs" />
     <Compile Include="NyxApplicationConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DefaultNavigator.cs" />
+    <Compile Include="SystemTray\ISystemTrayServiceConfigurator.cs" />
+    <Compile Include="SystemTray\SystemTrayServiceConfigurator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nyx.Composition\Nyx.Composition.csproj">

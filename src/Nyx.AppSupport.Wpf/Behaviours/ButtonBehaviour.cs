@@ -2,7 +2,7 @@
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 
-namespace Nyx.AppSupport.Wpf.Behaviours
+namespace Nyx.AppSupport.Behaviours
 {
     public class ButtonBehaviour
     {

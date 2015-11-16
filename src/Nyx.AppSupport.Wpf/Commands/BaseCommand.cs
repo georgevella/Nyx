@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace Nyx.AppSupport.Wpf.Commands
+namespace Nyx.AppSupport.Commands
 {
     public abstract class BaseCommand<T> : ICommand
     {

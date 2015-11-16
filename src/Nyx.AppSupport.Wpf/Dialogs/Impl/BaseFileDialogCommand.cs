@@ -1,4 +1,4 @@
-namespace Nyx.AppSupport.Wpf.Dialogs.Impl
+namespace Nyx.AppSupport.Dialogs.Impl
 {
     internal abstract class BaseFileDialogCommand : BaseDialogCommand
     {

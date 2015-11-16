@@ -2,7 +2,7 @@
 using Nyx.Composition;
 using Nyx.Presentation;
 
-namespace Nyx.AppSupport.Wpf
+namespace Nyx.AppSupport
 {
     public class ModalNavigator : INavigator
     {

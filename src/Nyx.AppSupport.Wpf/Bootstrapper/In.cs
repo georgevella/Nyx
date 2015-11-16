@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 
 // ReSharper disable once CheckNamespace
-namespace Nyx.AppSupport.Wpf
+namespace Nyx.AppSupport
 {
     /// <summary>
     /// </summary>

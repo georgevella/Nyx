@@ -1,4 +1,4 @@
-﻿namespace Nyx.AppSupport.Wpf
+﻿namespace Nyx.AppSupport
 {
     public interface IUserNotificationService
     {

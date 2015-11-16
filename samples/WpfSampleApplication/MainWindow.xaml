@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfSampleApplication"
-        xmlns:Dialogs="clr-namespace:Nyx.AppSupport.Wpf.Dialogs;assembly=Nyx.AppSupport.Wpf"
+        xmlns:Dialogs="clr-namespace:Nyx.AppSupport.Dialogs;assembly=Nyx.AppSupport.Wpf"
         xmlns:viewModels="clr-namespace:WpfSampleApplication.ViewModels"
         x:Class="WpfSampleApplication.MainWindow"
         mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
@@ -59,15 +59,31 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="TabItem">
-                <Grid Background="#FFE5E5E5"/>
+            <TabItem Header="System Tray">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="46*"/>
+                        <RowDefinition Height="73*"/>
+                        <RowDefinition Height="100*"/>
+                    </Grid.RowDefinitions>
+                    <Button Content="Show" HorizontalAlignment="Left" Margin="10,10,0,10" Width="75" 
+                            Command="{Binding Path=ShowSystemTrayIconCommand}"
+                            />
+                    <Button Content="Hide" HorizontalAlignment="Left" Margin="90,10,0,10" Width="75"
+                            Command="{Binding Path=HideSystemTrayIconCommand}"
+                            />
+                    <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="364" Grid.Row="1"/>
+                    <Button Content="Notify" HorizontalAlignment="Left" Margin="10,38,0,9" Width="155" Grid.Row="1" 
+                            Command="{Binding Path=SystemTrayNotificationCommand}" 
+                            CommandParameter="{Binding ElementName=textBox, Path=Text}">
+
+                    </Button>
+                </Grid>
             </TabItem>
         </TabControl>
-        <Button Content="Exit" HorizontalAlignment="Left" Margin="425,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="82" Height="30"
-                Command="{Binding Path=ExitAppCommand}"
-                >
-            
-        </Button>
+        <Button Content="Exit" Margin="0,0,10,10" Grid.Row="1"
+                Command="{Binding Path=ExitAppCommand}" HorizontalAlignment="Right" Width="82" Height="30" VerticalAlignment="Bottom"
+                />
 
     </Grid>
 </Window>

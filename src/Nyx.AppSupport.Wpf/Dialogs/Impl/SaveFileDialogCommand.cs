@@ -1,7 +1,7 @@
 using System.Windows.Forms;
-using Nyx.AppSupport.Wpf.Dialogs.Impl;
+using Nyx.AppSupport.Dialogs.Impl;
 
-namespace Nyx.AppSupport.Wpf.Dialogs
+namespace Nyx.AppSupport.Dialogs
 {
     /// <summary>
     /// </summary>

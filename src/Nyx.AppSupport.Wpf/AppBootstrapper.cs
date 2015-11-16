@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using Nyx.AppSupport.Wpf.Dialogs;
+using Nyx.AppSupport.Dialogs;
 using Nyx.Composition;
 using Nyx.Presentation;
 
-namespace Nyx.AppSupport.Wpf
+namespace Nyx.AppSupport
 {
     public class AppBootstrapper : IDisposable
     {

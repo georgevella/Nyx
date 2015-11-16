@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 
-namespace Nyx.AppSupport.Wpf.Behaviours
+namespace Nyx.AppSupport.Behaviours
 {
     internal static class EventBehaviourFactory
     {

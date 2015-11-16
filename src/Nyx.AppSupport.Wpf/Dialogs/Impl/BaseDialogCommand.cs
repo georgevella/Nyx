@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 
-namespace Nyx.AppSupport.Wpf.Dialogs.Impl
+namespace Nyx.AppSupport.Dialogs.Impl
 {
     internal abstract class BaseDialogCommand : DependencyObject, ICommand, INotifyPropertyChanged
     {

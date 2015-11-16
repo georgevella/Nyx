@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Input;
 
-namespace Nyx.AppSupport.Wpf.Commands
+namespace Nyx.AppSupport.Commands
 {
     /// <summary>
     ///     This class allows delegating the commanding logic to methods passed as parameters,

@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Nyx.AppSupport.Wpf
+namespace Nyx.AppSupport
 {
     public interface IApplicationServices
     {

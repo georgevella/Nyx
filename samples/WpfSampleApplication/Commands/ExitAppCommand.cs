@@ -1,6 +1,6 @@
 ﻿using System.Windows;
-using Nyx.AppSupport.Wpf;
-using Nyx.AppSupport.Wpf.Commands;
+using Nyx.AppSupport;
+using Nyx.AppSupport.Commands;
 
 namespace WpfSampleApplication.Commands
 {

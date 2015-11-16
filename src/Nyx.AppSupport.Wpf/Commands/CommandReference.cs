@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 
-namespace Nyx.AppSupport.Wpf.Commands
+namespace Nyx.AppSupport.Commands
 {
     /// <summary>
     /// This class facilitates associating a key binding in XAML markup to a command

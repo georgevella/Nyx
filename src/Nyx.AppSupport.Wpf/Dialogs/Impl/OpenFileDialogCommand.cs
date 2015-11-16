@@ -1,9 +1,9 @@
 using System;
 using System.Windows;
 using System.Windows.Forms;
-using Nyx.AppSupport.Wpf.Dialogs.Impl;
+using Nyx.AppSupport.Dialogs.Impl;
 
-namespace Nyx.AppSupport.Wpf.Dialogs
+namespace Nyx.AppSupport.Dialogs
 {
     /// <summary>
     /// The OpenFileDialogCommand FrameworkElement provides a way for the View to display the Open File dialog, allow the user to choose a file

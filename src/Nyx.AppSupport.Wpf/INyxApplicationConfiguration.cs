@@ -1,7 +1,7 @@
 using System.Reflection;
 using Nyx.Composition;
 
-namespace Nyx.AppSupport.Wpf
+namespace Nyx.AppSupport
 {
     public interface INyxApplicationConfiguration : IContainerConfiguration
     {

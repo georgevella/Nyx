@@ -1,6 +1,6 @@
 using System.Windows.Input;
 
-namespace Nyx.AppSupport.Wpf.Dialogs
+namespace Nyx.AppSupport.Dialogs
 {
     public interface ISaveFileDialogCommand : ICommand
     {
