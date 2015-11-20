@@ -19,12 +19,16 @@ namespace Nyx.AppSupport
 
         public TViewModel NavigateTo<TViewModel>() where TViewModel : IViewModel
         {
+            var showModal = typeof(TViewModel).GetCustomAttribute<DialogAttribute>() != null;
 
+            return NavigateTo<TViewModel>(showModal);
+        }
+
+        public TViewModel NavigateTo<TViewModel>(bool showModal) where TViewModel : IViewModel
+        {
             var viewType = _viewResolver.ResolveViewTypeFor<TViewModel>();
             var view = (FrameworkElement)_container.Get(viewType);
             var viewModel = _container.Get<TViewModel>();
-
-            var showModal = typeof(TViewModel).GetCustomAttribute<DialogAttribute>() != null;
 
             view.DataContext = viewModel;
 

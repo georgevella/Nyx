@@ -20,7 +20,9 @@ namespace WpfSampleApplication.ViewModels
             ISaveFileDialogCommand saveFileDialogCommand,
             IOpenFileDialogCommand openFileDialogCommand,
             ExitAppCommand exitApp,
-            NotifyOnSystemTrayCommand systemTrayNotificationCommand, INavigator navigator)
+            NotifyOnSystemTrayCommand systemTrayNotificationCommand,
+            INavigator navigator,
+            IUserInterfaceThread userInterfaceThread) : base(userInterfaceThread)
         {
             _systemTray = systemTray;
             _navigator = navigator;
