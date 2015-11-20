@@ -50,6 +50,8 @@ namespace Nyx.AppSupport
                 containerConfiguration.Register<Application>().Using(_app);
                 containerConfiguration.Register<IApplicationServices>().UsingConcreteType<ApplicationServices>();
 
+                containerConfiguration.Register<IUserInterfaceThread>().UsingConcreteType<WpfUserInterfaceThread>();
+
                 configAction(new NyxApplicationConfiguration(_app, _viewResolver, containerConfiguration));
 
                 foreach (var pair in _viewResolver)

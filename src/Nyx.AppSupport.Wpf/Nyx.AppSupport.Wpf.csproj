@@ -75,6 +75,7 @@
     <Compile Include="DefaultNavigator.cs" />
     <Compile Include="SystemTray\ISystemTrayServiceConfigurator.cs" />
     <Compile Include="SystemTray\SystemTrayServiceConfigurator.cs" />
+    <Compile Include="WpfUserInterfaceThread.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nyx.Composition\Nyx.Composition.csproj">

@@ -5,9 +5,15 @@ using System.Runtime.CompilerServices;
 
 namespace Nyx.Presentation
 {
-    public class AbstractNotifyPropertyChanged<TComponent> : INotifyPropertyChanged
+    public abstract class AbstractNotifyPropertyChanged<TComponent> : INotifyPropertyChanged
     {
+        private readonly IUserInterfaceThread _userInterfaceThread;
         public event PropertyChangedEventHandler PropertyChanged;
+
+        protected AbstractNotifyPropertyChanged(IUserInterfaceThread userInterfaceThread)
+        {
+            _userInterfaceThread = userInterfaceThread;
+        }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -22,7 +28,10 @@ namespace Nyx.Presentation
             }
 
             var handler = PropertyChanged;
-            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            if (handler == null)
+                return;
+
+            _userInterfaceThread.Run(() => handler(this, new PropertyChangedEventArgs(propertyName)));
         }
 
         protected virtual void OnPropertyChanged(Expression<Func<TComponent, object>> property)

@@ -7,6 +7,6 @@ namespace Nyx.Presentation
 {
     public abstract class ViewModel<TViewModel> : AbstractNotifyPropertyChanged<TViewModel>, IViewModel
     {
-
+        protected ViewModel(IUserInterfaceThread userInterfaceThread) : base(userInterfaceThread) { }
     }
 }
