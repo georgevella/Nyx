@@ -51,6 +51,7 @@
     <Compile Include="IInternalServiceRegistration.cs" />
     <Compile Include="IServiceFactory.cs" />
     <Compile Include="IServiceRegistration.cs" />
+    <Compile Include="Messaging\IMessageRouter.cs" />
     <Compile Include="ServiceFactories\ConstructorInjectionServiceFactory.cs" />
     <Compile Include="ServiceFactories\SimpleServiceFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
