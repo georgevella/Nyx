@@ -1,6 +1,6 @@
 using System;
 
-namespace Nyx.Composition.Tests.Stubs
+namespace Nyx.Tests.Stubs
 {
     public class DisposableStub : IStub, IDisposable
     {

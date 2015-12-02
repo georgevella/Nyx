@@ -1,8 +1,9 @@
 ﻿using FluentAssertions;
-using Nyx.Composition.Tests.Stubs;
+using Nyx.Composition;
+using Nyx.Tests.Stubs;
 using Xunit;
 
-namespace Nyx.Composition.Tests
+namespace Nyx.Tests
 {
     public class PyxisKeyTests
     {
@@ -12,7 +13,7 @@ namespace Nyx.Composition.Tests
             var key1 = new ServiceKey(typeof(IStub));
             var key2 = new ServiceKey(typeof(IStub));
 
-            key2.Should().Be(key1);
+            AssertionExtensions.Should((object) key2).Be(key1);
         }
     }
 }

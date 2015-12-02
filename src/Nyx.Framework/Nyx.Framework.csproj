@@ -35,7 +35,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Composition\ContainerFactory.cs" />
-    <Compile Include="Composition\ContractKey.cs" />
     <Compile Include="Composition\IContainer.cs" />
     <Compile Include="Composition\IContainerConfiguration.cs" />
     <Compile Include="Composition\IInstanceBuilder.cs" />

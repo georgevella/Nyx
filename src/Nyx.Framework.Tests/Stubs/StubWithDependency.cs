@@ -1,4 +1,4 @@
-namespace Nyx.Composition.Tests.Stubs
+namespace Nyx.Tests.Stubs
 {
     public class StubWithDependency : IStub
     {

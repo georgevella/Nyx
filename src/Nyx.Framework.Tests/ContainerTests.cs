@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Linq;
 using FluentAssertions;
-using Nyx.Composition.Tests.Stubs;
+using Nyx.Composition;
+using Nyx.Tests.Stubs;
 using Xunit;
 
-namespace Nyx.Composition.Tests
+namespace Nyx.Tests
 {
     public class ContainerTests
     {

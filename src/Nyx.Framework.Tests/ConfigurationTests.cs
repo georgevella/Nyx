@@ -1,11 +1,9 @@
-﻿using System;
-using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using FluentAssertions;
 using Nyx.Composition.Impl;
-using Nyx.Composition.Tests.Stubs;
+using Nyx.Tests.Stubs;
 using Xunit;
 
-namespace Nyx.Composition.Tests
+namespace Nyx.Tests
 {
     public class ConfigurationTests
     {
