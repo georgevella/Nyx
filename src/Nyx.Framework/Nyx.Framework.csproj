@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{19065A7D-FF32-4903-975C-B51E64DB33AD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Nyx</RootNamespace>
+    <AssemblyName>Nyx.Framework</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile111</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\bin\debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\bin\release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Composition\ContainerFactory.cs" />
+    <Compile Include="Composition\ContractKey.cs" />
+    <Compile Include="Composition\IContainer.cs" />
+    <Compile Include="Composition\IContainerConfiguration.cs" />
+    <Compile Include="Composition\IInstanceBuilder.cs" />
+    <Compile Include="Composition\IInternalServiceRegistration.cs" />
+    <Compile Include="Composition\Impl\AbstractLifeTime.cs" />
+    <Compile Include="Composition\Impl\ContainerImpl.cs" />
+    <Compile Include="Composition\Impl\DisposeAtEndOfLife.cs" />
+    <Compile Include="Composition\Impl\FluentContainerConfigurator.cs" />
+    <Compile Include="Composition\Impl\InstanceBuilder.cs" />
+    <Compile Include="Composition\Impl\ServiceInstanciationGraph.cs" />
+    <Compile Include="Composition\Impl\ServiceRegistration.cs" />
+    <Compile Include="Composition\IServiceFactory.cs" />
+    <Compile Include="Composition\IServiceRegistration.cs" />
+    <Compile Include="Composition\Messaging\IMessageRouter.cs" />
+    <Compile Include="Composition\ServiceFactories\ConstructorInjectionServiceFactory.cs" />
+    <Compile Include="Composition\ServiceFactories\SimpleServiceFactory.cs" />
+    <Compile Include="Composition\ServiceFactories\SingletonServiceFactory.cs" />
+    <Compile Include="Composition\ServiceFactories\StaticServiceFactory.cs" />
+    <Compile Include="Composition\ServiceKey.cs" />
+    <Compile Include="Presentation\AbstractNotifyPropertyChanged.cs" />
+    <Compile Include="Presentation\Attributes\DialogAttribute.cs" />
+    <Compile Include="Presentation\Conventions\ByNameDiscoveryConvention.cs" />
+    <Compile Include="Presentation\IDiscoveryConvention.cs" />
+    <Compile Include="Presentation\INavigator.cs" />
+    <Compile Include="Presentation\IUserInterfaceThread.cs" />
+    <Compile Include="Presentation\IViewModel.cs" />
+    <Compile Include="Presentation\IViewResolver.cs" />
+    <Compile Include="Presentation\ViewModel.cs" />
+    <Compile Include="Presentation\ViewResolver.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -78,13 +78,9 @@
     <Compile Include="WpfUserInterfaceThread.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Nyx.Composition\Nyx.Composition.csproj">
-      <Project>{9F7D5AC1-4011-4E1D-82DA-D49C78E288A3}</Project>
-      <Name>Nyx.Composition</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Nyx.Presentation\Nyx.Presentation.csproj">
-      <Project>{3B73BD77-1172-4BBC-BFA8-5D6479590A02}</Project>
-      <Name>Nyx.Presentation</Name>
+    <ProjectReference Include="..\Nyx.Framework\Nyx.Framework.csproj">
+      <Project>{19065a7d-ff32-4903-975c-b51e64db33ad}</Project>
+      <Name>Nyx.Framework</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
