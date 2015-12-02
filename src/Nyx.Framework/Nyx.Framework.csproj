@@ -48,12 +48,16 @@
     <Compile Include="Composition\Impl\ServiceRegistration.cs" />
     <Compile Include="Composition\IServiceFactory.cs" />
     <Compile Include="Composition\IServiceRegistration.cs" />
-    <Compile Include="Composition\Messaging\IMessageRouter.cs" />
+    <Compile Include="Messaging\IMessageHandler.cs" />
+    <Compile Include="Messaging\IMessageHandlerRunner.cs" />
+    <Compile Include="Messaging\IMessageRouter.cs" />
     <Compile Include="Composition\ServiceFactories\ConstructorInjectionServiceFactory.cs" />
     <Compile Include="Composition\ServiceFactories\SimpleServiceFactory.cs" />
     <Compile Include="Composition\ServiceFactories\SingletonServiceFactory.cs" />
     <Compile Include="Composition\ServiceFactories\StaticServiceFactory.cs" />
     <Compile Include="Composition\ServiceKey.cs" />
+    <Compile Include="Messaging\MessageHandlerRunner.cs" />
+    <Compile Include="Messaging\MessageRouter.cs" />
     <Compile Include="Presentation\AbstractNotifyPropertyChanged.cs" />
     <Compile Include="Presentation\Attributes\DialogAttribute.cs" />
     <Compile Include="Presentation\Conventions\ByNameDiscoveryConvention.cs" />

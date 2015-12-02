@@ -1,15 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using Nyx.Composition;
 
-namespace Nyx.Composition.Messaging
+namespace Nyx.Messaging
 {
-    public interface IMessageRouter
-    {
-        void Register<TMessage, THandler>()
-            where THandler : IMessageHandler<TMessage>
-            where TMessage : class;
-    }
-
     public class MessageRouter : IMessageRouter
     {
         private readonly IContainer _container;
@@ -57,33 +51,5 @@ namespace Nyx.Composition.Messaging
 
             }
         }
-    }
-
-    internal interface IMessageHandlerRunner
-    {
-        void Invoke(object message);
-    }
-
-    class MessageHandlerRunner<TMessage, THandler> : IMessageHandlerRunner
-        where TMessage : class where THandler : IMessageHandler<TMessage>
-    {
-        private readonly IContainer _container;
-
-        public void Invoke(object message)
-        {
-            var handler = _container.Get<THandler>();
-            handler.Handle((TMessage)message);
-        }
-
-        public MessageHandlerRunner(IContainer container)
-        {
-            _container = container;
-        }
-    }
-
-    public interface IMessageHandler<in TMessage>
-        where TMessage : class
-    {
-        void Handle(TMessage message);
     }
 }
