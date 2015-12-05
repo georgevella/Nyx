@@ -4,7 +4,7 @@ namespace Nyx.AppSupport.SystemTray
 {
     public interface ISystemTrayServiceConfigurator
     {
-        ISystemTrayServiceConfigurator UsingIcon(Uri packUri);
-        ISystemTrayServiceConfigurator Menu(Action<ISystemTrayMenuConfigurator> c);
+        ISystemTrayServiceConfigurator SetIcon(Uri packUri);
+        ISystemTrayServiceConfigurator RightclickMenu(Action<ISystemTrayMenuConfigurator> c);
     }
 }

@@ -4,8 +4,10 @@ namespace Nyx.AppSupport.SystemTray
 {
     public interface ISystemTrayMenuConfigurator
     {
-        ISystemTrayMenuConfigurator MenuItem(string text, object messageId);
-        ISystemTrayMenuConfigurator MenuItem(string text, Uri packUri, object messageId);
+        ISystemTrayMenuConfigurator MenuItem<T>(string text)
+            where T : class, new();
+        ISystemTrayMenuConfigurator MenuItem<T>(string text, Uri iconUri)
+            where T : class, new();
         ISystemTrayMenuConfigurator Seperator();
     }
 }

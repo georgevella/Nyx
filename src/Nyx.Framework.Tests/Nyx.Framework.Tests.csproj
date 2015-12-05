@@ -78,6 +78,7 @@
   <ItemGroup>
     <Compile Include="ConfigurationTests.cs" />
     <Compile Include="LifecycleSupportTests.cs" />
+    <Compile Include="MessageRouterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PyxisKeyTests.cs" />
     <Compile Include="ContainerTests.cs" />

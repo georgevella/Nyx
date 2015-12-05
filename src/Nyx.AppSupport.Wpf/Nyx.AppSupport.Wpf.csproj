@@ -52,6 +52,7 @@
     <Compile Include="Behaviours\EventBehaviourFactory.cs" />
     <Compile Include="Behaviours\ListBoxBehaviour.cs" />
     <Compile Include="Behaviours\WindowBehaviour.cs" />
+    <Compile Include="Bootstrapper\In.cs" />
     <Compile Include="Commands\BaseCommand.cs" />
     <Compile Include="Commands\CommandReference.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
@@ -60,12 +61,11 @@
     <Compile Include="Dialogs\IOpenFileDialogCommand.cs" />
     <Compile Include="Dialogs\ISaveFileDialogCommand.cs" />
     <Compile Include="Dialogs\Impl\OpenFileDialogCommand.cs" />
-    <Compile Include="Bootstrapper\In.cs" />
     <Compile Include="Dialogs\Impl\SaveFileDialogCommand.cs" />
     <Compile Include="Dialogs\ISelectFolderDialogCommand.cs" />
     <Compile Include="Dialogs\Impl\SelectFolderDialogCommand.cs" />
     <Compile Include="IApplicationServices.cs" />
-    <Compile Include="INyxApplicationConfiguration.cs" />
+    <Compile Include="NyxApplicationExtensions.cs" />
     <Compile Include="SystemTray\ISystemTrayMenuConfigurator.cs" />
     <Compile Include="SystemTray\ISystemTrayService.cs" />
     <Compile Include="IUserNotificationService.cs" />
@@ -74,7 +74,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DefaultNavigator.cs" />
     <Compile Include="SystemTray\ISystemTrayServiceConfigurator.cs" />
-    <Compile Include="SystemTray\SystemTrayServiceConfigurator.cs" />
+    <Compile Include="SystemTray\SystemTrayService.cs" />
     <Compile Include="WpfUserInterfaceThread.cs" />
   </ItemGroup>
   <ItemGroup>

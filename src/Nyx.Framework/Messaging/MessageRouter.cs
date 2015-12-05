@@ -1,5 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using Nyx.Composition;
 
 namespace Nyx.Messaging
@@ -7,19 +10,29 @@ namespace Nyx.Messaging
     public class MessageRouter : IMessageRouter
     {
         private readonly IContainer _container;
-        private readonly Dictionary<Type, List<Action<dynamic>>> _messageHandlerRunners = new Dictionary<Type, List<Action<dynamic>>>();
+        private readonly Dictionary<Type, List<Action<dynamic>>> _messageHandlerInvokers = new Dictionary<Type, List<Action<dynamic>>>();
 
         public MessageRouter(IContainer container)
         {
             _container = container;
         }
 
-        public void Register<TMessage, THandler>() where TMessage : class where THandler : IMessageHandler<TMessage>
+        internal void ConfigureWith(MessageRouterConfiguration configuration)
+        {
+            var addHandlerInvokerMethod = GetType().GetTypeInfo().DeclaredMethods.First(x => x.Name == nameof(AddHandlerInvoker));
+
+            foreach (var mapping in configuration.Mappings)
+            {
+                addHandlerInvokerMethod.MakeGenericMethod(mapping.MessageType, mapping.HandlerType).Invoke(this, null);
+            }
+        }
+
+        public void AddHandlerInvoker<TMessage, THandler>() where TMessage : class where THandler : IMessageHandler<TMessage>
         {
             List<Action<dynamic>> handlers = null;
-            if (!_messageHandlerRunners.TryGetValue(typeof(TMessage), out handlers))
+            if (!_messageHandlerInvokers.TryGetValue(typeof(TMessage), out handlers))
             {
-                handlers = _messageHandlerRunners[typeof(TMessage)] = new List<Action<dynamic>>();
+                handlers = _messageHandlerInvokers[typeof(TMessage)] = new List<Action<dynamic>>();
             }
 
             handlers.Add((m) =>
@@ -30,26 +43,19 @@ namespace Nyx.Messaging
             });
         }
 
-        public void Post<TMessage>(TMessage message)
-            where TMessage : class
+        public void Post(object message)
         {
-            List<Action<dynamic>> handlers;
-            if (!_messageHandlerRunners.TryGetValue(typeof(TMessage), out handlers))
+            var type = message.GetType();
+            List<Action<dynamic>> runners;
+            if (_messageHandlerInvokers.TryGetValue(type, out runners))
             {
-                throw new InvalidOperationException("Message unknown");
+                foreach (var r in runners)
+                    r(message);
+
+                return;
             }
 
-            try
-            {
-                foreach (var handler in handlers)
-                {
-                    handler(message);
-                }
-            }
-            catch (Exception e)
-            {
-
-            }
+            throw new UnsupportedMessageType(type);
         }
     }
 }

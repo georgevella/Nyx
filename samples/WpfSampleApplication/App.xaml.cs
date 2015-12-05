@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using Nyx.AppSupport;
 using Nyx.AppSupport.AppServices;
+using Nyx.Messaging;
+using WpfSampleApplication.Messages;
 using WpfSampleApplication.ViewModels;
 
 namespace WpfSampleApplication
@@ -20,10 +22,6 @@ namespace WpfSampleApplication
 
         protected override void OnStartup(StartupEventArgs e)
         {
-
-            var aboutMessageId = Guid.NewGuid();
-            var exitMessageId = Guid.NewGuid();
-
             _bootstrapper = new AppBootstrapper(this);
 
             _bootstrapper.Setup(c =>
@@ -34,14 +32,20 @@ namespace WpfSampleApplication
 
                 c.UsesSystemTray(s =>
                 {
-                    s.UsingIcon(new Uri("pack://application:,,,/Assets/Coherence.ico"))
-                        .Menu(x =>
+                    s.SetIcon(new Uri("pack://application:,,,/Assets/Coherence.ico"))
+                        .RightclickMenu(x =>
                         {
-                            x.MenuItem("About", aboutMessageId)
+                            x.MenuItem<ShowAboutBoxMessage>("About")
                                 .Seperator()
-                                .MenuItem("Exit", exitMessageId);
+                                .MenuItem<TerminateAppMessage>("Exit");
                         });
                 });
+
+                c.UsesMessageRouter(mr =>
+                {
+                    mr.AutoWireEverything(In.ThisAssembly);
+                });
+
                 c.UsesNotificationServices<MessageBoxNotificationService>();
             });
 

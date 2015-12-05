@@ -73,6 +73,9 @@ namespace Nyx.Composition.Impl
             foreach (var reg in Configuration.Registrations)
             {
                 var key = new ServiceKey(reg);
+                if (_registrations.ContainsKey(key))
+                    continue;
+
                 _registrations.Add(key, reg);
                 _factories.Add(key, reg.GetObjectFactory());
                 if (reg.SupportsInstanceBuilder)

@@ -34,6 +34,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AppSupport\BaseNyxApplicationConfigurator.cs" />
+    <Compile Include="AppSupport\INyxApplicationConfiguration.cs" />
     <Compile Include="Composition\ContainerFactory.cs" />
     <Compile Include="Composition\IContainer.cs" />
     <Compile Include="Composition\IContainerConfiguration.cs" />
@@ -48,6 +50,8 @@
     <Compile Include="Composition\Impl\ServiceRegistration.cs" />
     <Compile Include="Composition\IServiceFactory.cs" />
     <Compile Include="Composition\IServiceRegistration.cs" />
+    <Compile Include="EnumerableExtensions.cs" />
+    <Compile Include="Messaging\AppSupportExtensions.cs" />
     <Compile Include="Messaging\IMessageHandler.cs" />
     <Compile Include="Messaging\IMessageHandlerRunner.cs" />
     <Compile Include="Messaging\IMessageRouter.cs" />
@@ -56,8 +60,12 @@
     <Compile Include="Composition\ServiceFactories\SingletonServiceFactory.cs" />
     <Compile Include="Composition\ServiceFactories\StaticServiceFactory.cs" />
     <Compile Include="Composition\ServiceKey.cs" />
+    <Compile Include="Messaging\IMessageRouterConfigurator.cs" />
+    <Compile Include="Messaging\MessageAttribute.cs" />
     <Compile Include="Messaging\MessageHandlerRunner.cs" />
     <Compile Include="Messaging\MessageRouter.cs" />
+    <Compile Include="Messaging\MessageRouterConfiguration.cs" />
+    <Compile Include="Messaging\UnsupportedMessageType.cs" />
     <Compile Include="Presentation\AbstractNotifyPropertyChanged.cs" />
     <Compile Include="Presentation\Attributes\DialogAttribute.cs" />
     <Compile Include="Presentation\Conventions\ByNameDiscoveryConvention.cs" />
